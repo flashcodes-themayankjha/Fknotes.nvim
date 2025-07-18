@@ -1,39 +1,94 @@
 
-local M = {}
+local popup = require("nui.popup")
+local event = require("nui.utils.autocmd").event
+local nuitext = require("nui.text")
+local nuiline = require("nui.line")
+local nuilayout = require("nui.layout")
+local layout = nuilayout
+local text = nuitext
+local line = nuiline
 
-function M.open()
-  local lines = {
-    "🌟 FKNotes Menu 🌟",
-    "",
-    "1. ➕ Create a New Task",
-    "2. 📋 View Task List",
-    "",
-    "Press the number to select an option. Press 'q' to quit."
-  }
+local m = {}
 
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-
-  local width = 40
-  local height = #lines
-  local row = (vim.o.lines - height) / 2
-  local col = (vim.o.columns - width) / 2
-
-  vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    style = "minimal",
-    border = "rounded",
-    row = row,
-    col = col,
-    width = width,
-    height = height,
+function m.open_main_menu()
+  local popup = popup({
+    position = "50%",
+    size = {
+      width = 50,
+      height = 16,
+    },
+    border = {
+      style = {
+        top_left = "╭",
+        top = "─",
+        top_right = "╮",
+        right = "│",
+        bottom_right = "╯",
+        bottom = "─",
+        bottom_left = "╰",
+        left = "│",
+      },
+      text = {
+        top = text(" 🗂 FkNotes Main Menu ", "title"),
+        bottom = text(" Powered by Neovim and Fkvim ", "comment"),
+      },
+    },
+    win_options = {
+      winhighlight = "normal:normal,floatborder:comment",
+    },
   })
 
-  -- Keybindings
-  vim.api.nvim_buf_set_keymap(buf, 'n', '1', [[:lua require("fknotes.ui.task_form").open()<CR>]], { noremap = true, silent = true })
-  vim.api.nvim_buf_set_keymap(buf, 'n', '2', [[:lua require("fknotes.ui.task_browser").open()<CR>]], { noremap = true, silent = true })
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':bd!<CR>', { noremap = true, silent = true })
+  local menu_lines = {
+    line():append("  Create new task", "identifier"),
+    line():append("  View tasks", "function"),
+    line():append("󰎞  Create new note", "statement"),
+    line():append("  Browse all notes", "type"),
+  }
+
+  local help_line = line()
+  help_line:append("      [", "comment")
+  help_line:append("❓]  [help", "function")
+  help_line:append("]", "comment")
+  help_line:append("   ")
+  help_line:append("[", "comment")
+  help_line:append("esc] [quit", "errormsg")
+  help_line:append("]", "comment")
+
+  popup:mount()
+
+  local buf = popup.bufnr
+  vim.api.nvim_buf_set_option(buf, "modifiable", true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+
+  -- draw menu content
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
+    "",
+    "   Welcome, choose the option bellow 🏹",
+    "",
+  })
+
+  for _, line in ipairs(menu_lines) do
+    vim.api.nvim_buf_set_lines(buf, -1, -1, false, { "   " .. line:content() })
+  end
+
+  -- add spacing and footer buttons
+  vim.api.nvim_buf_set_lines(buf, -1, -1, false, {
+    "",
+    "   " .. help_line:content(),
+    "",
+  })
+
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
+
+  -- escape closes the popup
+  popup:map("n", "<esc>", function()
+    popup:unmount()
+  end, { noremap = true })
+
+  -- optionally handle enter key
+  vim.keymap.set("n", "<cr>", function()
+    -- add custom action if needed
+  end, { buffer = buf })
 end
 
-return M
+return m
