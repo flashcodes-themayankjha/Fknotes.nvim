@@ -1,78 +1,64 @@
 
+local NuiPopup = require("nui.popup")
+local event = require("nui.utils.autocmd").event
 local storage = require("fknotes.core.storage")
 
 local M = {}
 
 function M.open()
-  local tasks = storage.load_tasks()
-
-  local lines = { "📋 TODO List", "" }
-  local today = os.date("%Y-%m-%d")
-
-  for i, task in ipairs(tasks) do
-    local status = ""
-    local color = "Normal"
-    if task.done then
-      status = "✔ DONE"
-      color = "TodoDone"
-    elseif task.due < today then
-      status = "❌ OVERDUE"
-      color = "TodoOverdue"
-    elseif task.due == today then
-      status = "⚠ DUE TODAY"
-      color = "TodoDueToday"
-    else
-      status = "⏳ UPCOMING"
-      color = "TodoUpcoming"
-    end
-
-    local line = string.format("%d. %s [%s] - %s", i, task.title, task.due, status)
-    table.insert(lines, line)
-  end
-
-  if #tasks == 0 then
-    table.insert(lines, "No tasks found. Press 'q' to exit.")
-  end
-
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-
-  local width = 60
-  local height = #lines
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    style = "minimal",
-    border = "rounded",
-    row = (vim.o.lines - height) / 2,
-    col = (vim.o.columns - width) / 2,
-    width = width,
-    height = height,
+  local popup = NuiPopup({
+    enter = true,
+    focusable = true,
+    border = {
+      style = "rounded",
+      text = { top = " 📋 Tasks ", top_align = "center" },
+    },
+    position = "50%",
+    size = {
+      width = 70,
+      height = 20,
+    },
+    buf_options = {
+      modifiable = true,
+      readonly = false,
+    },
   })
 
-  -- Define highlights
-  vim.cmd("highlight TodoDone guifg=#6ec1e4")
-  vim.cmd("highlight TodoOverdue guifg=#e06c75")
-  vim.cmd("highlight TodoDueToday guifg=#e5c07b")
-  vim.cmd("highlight TodoUpcoming guifg=#98c379")
+  popup:mount()
 
-  -- Apply highlights line by line
-  for i, task in ipairs(tasks) do
-    local hl_group
-    if task.done then
-      hl_group = "TodoDone"
-    elseif task.due < today then
-      hl_group = "TodoOverdue"
-    elseif task.due == today then
-      hl_group = "TodoDueToday"
-    else
-      hl_group = "TodoUpcoming"
-    end
-    vim.api.nvim_buf_add_highlight(buf, -1, hl_group, i + 1, 0, -1)
+  local tasks = storage.load_tasks()
+
+  -- Defensive: Ensure fields exist
+  for _, task in ipairs(tasks) do
+    task.title = task.title or "Untitled"
+    task.priority = task.priority or "Low"
+    task.due_date = task.due_date or "N/A"
+    task.created = task.created or "N/A"
   end
 
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':bd!<CR>', { noremap = true, silent = true })
+  -- Sort by due_date if available
+  table.sort(tasks, function(a, b)
+    return (a.due_date or "") < (b.due_date or "")
+  end)
+
+  local lines = {}
+  for i, task in ipairs(tasks) do
+    table.insert(lines, string.format("%d. %s [%s] - Due: %s", i, task.title, task.priority, task.due_date))
+  end
+
+  if #lines == 0 then
+    lines = { "No tasks found." }
+  end
+
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
+
+  popup:map("n", "q", function()
+    popup:unmount()
+  end, { noremap = true })
+
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
 end
 
 return M
-
