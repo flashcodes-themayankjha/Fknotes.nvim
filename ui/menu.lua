@@ -14,8 +14,8 @@ function m.open_main_menu()
   local popup = popup({
     position = "50%",
     size = {
-      width = 50,
-      height = 16,
+      width = 40,
+      height = 10,
     },
     border = {
       style = {
@@ -30,7 +30,7 @@ function m.open_main_menu()
       },
       text = {
         top = text(" 🗂 FkNotes Main Menu ", "title"),
-        bottom = text(" Powered by Neovim and Fkvim ", "comment"),
+        bottom = text(" Powered by Neovim and FKvim ", "comment"),
       },
     },
     win_options = {
@@ -39,19 +39,26 @@ function m.open_main_menu()
   })
 
   local menu_lines = {
+<<<<<<< HEAD
+    line():append("📝 Create New Task", "identifier"),
+    line():append("🔍  View Tasks", "function"),
+    line():append("📓  Create New Note", "statement"),
+    line():append("🔖 Browse All Notes", "type"),
+=======
     line():append("📝 Create new task", "identifier"),
     line():append("🔍  View tasks", "function"),
     line():append("📓  Create new note", "statement"),
     line():append("🔖 Browse all notes", "type"),
+>>>>>>> 45abf25db728e17fd14a8d7ad95dde77df09e2eb
   }
 
   local help_line = line()
   help_line:append("      [", "comment")
-  help_line:append("❓]  [help", "function")
+  help_line:append("❓]  [Help", "function")
   help_line:append("]", "comment")
   help_line:append("   ")
   help_line:append("[", "comment")
-  help_line:append("esc] [quit", "errormsg")
+  help_line:append("󱊷] [Quit", "error")
   help_line:append("]", "comment")
 
   popup:mount()
@@ -63,7 +70,7 @@ function m.open_main_menu()
   -- draw menu content
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
     "",
-    "   Welcome, choose the option bellow 🏹",
+    "   Welcome, Choose the option bellow 🏹",
     "",
   })
 
