@@ -89,7 +89,7 @@ vim.api.nvim_buf_set_option(buf, "filetype", "fknotes-menu")
   local function render_menu(index)
     local lines = {
       "",
-      "   Welcome, Choose the option below 🏹",
+      "   Welcome, Choose the option below (1-4) 🏹",
       "",
     }
 
