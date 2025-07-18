@@ -1,60 +1,78 @@
 
-local M = {}
+local NuiPopup = require("nui.popup")
+local event = require("nui.utils.autocmd").event
 local storage = require("fknotes.core.storage")
 
-function M.open()
-  local buf = vim.api.nvim_create_buf(false, true)
-  local lines = {
-    "Create New Task",
-    "",
-    "Title: ",
-    "Description: ",
-    "Due Date: "
-  }
+local M = {}
 
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-  vim.api.nvim_buf_set_option(buf, "modifiable", true)
-
-  local width, height = 50, #lines + 2
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    width = width,
-    height = height,
-    row = (vim.o.lines - height) / 2,
-    col = (vim.o.columns - width) / 2,
-    style = "minimal",
-    border = "rounded",
+function M.new_task()
+  local popup = NuiPopup({
+    enter = true,
+    focusable = true,
+    border = {
+      style = "rounded",
+      text = { top = " 📝 New Task ", top_align = "center" },
+    },
+    position = "50%",
+    size = {
+      width = 60,
+      height = 15,
+    },
+    buf_options = {
+      modifiable = true,
+      readonly = false,
+    },
   })
 
-  vim.api.nvim_buf_set_option(buf, "modifiable", true)
-  vim.api.nvim_win_set_cursor(win, {3, 7}) -- Move to start of Title input
+  popup:mount()
 
-  vim.keymap.set("n", "<CR>", function()
-    local content = vim.api.nvim_buf_get_lines(buf, 3, 6, false)
+  local lines = {
+    "Title: ",
+    "Description: ",
+    "Priority: [Low | Medium | High]",
+    "Due Date (YYYY-MM-DD): ",
+    "",
+    "[S] Save   [C] Cancel",
+  }
 
-    local function safe_sub(line, start)
-      if not line then return "" end
-      return line:sub(start)
-    end
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
 
-    local task = {
-      title = safe_sub(content[1], 8),
-      description = safe_sub(content[2], 14),
-      due = safe_sub(content[3], 11),
-    }
+  popup:map("n", "C", function()
+    popup:unmount()
+  end, { noremap = true })
 
-    if task.title == "" then
-      print("❌ Title is required")
+  popup:map("n", "S", function()
+    local content = vim.api.nvim_buf_get_lines(popup.bufnr, 0, -1, false)
+
+    local title = content[1]:gsub("Title:%s*", "")
+    local description = content[2]:gsub("Description:%s*", "")
+    local priority = content[3]:match("Priority:%s*%[(.-)%]") or "Low"
+    local due_date = content[4]:gsub("Due Date %(.-%)%:%s*", "")
+
+    if title == "" then
+      vim.notify("⚠️ Title is required.", vim.log.levels.WARN)
       return
     end
 
+    local new_task = {
+      title = title,
+      description = description,
+      priority = priority,
+      due_date = due_date,
+      created = os.date("%Y-%m-%d"),
+    }
+
     local tasks = storage.load_tasks()
-    table.insert(tasks, task)
+    table.insert(tasks, new_task)
     storage.save_tasks(tasks)
 
-    vim.api.nvim_win_close(win, true)
-    print("✅ Task saved!")
-  end, { buffer = buf })
+    vim.notify("✅ Task saved!", vim.log.levels.INFO)
+    popup:unmount()
+  end, { noremap = true })
+
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
 end
 
 return M
