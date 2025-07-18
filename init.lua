@@ -1,36 +1,21 @@
+local m = {}
 
-local M = {}
-
-function M.setup()
-  -- Apply custom highlights
-vim.api.nvim_set_hl(0, "Title", { fg = "#ffd700", bold = true })      -- Yellowish title
-vim.api.nvim_set_hl(0, "Comment", { fg = "#888888" })                 -- Grey comment bar
-vim.api.nvim_set_hl(0, "FkNotesRedButton", { fg = "#ff5f5f", bold = true })
-vim.api.nvim_set_hl(0, "FkNotesBlueButton", { fg = "#5fafff", bold = true })
+function m.setup()
+  -- Load FKNotes highlight colors from fknotes/ui/colorscheme.lua
+  require("fknotes.ui.colorscheme").setup()
 
 
-  -- Ensure highlights persist across color scheme changes
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-      vim.api.nvim_set_hl(0, "FkNotesRedButton", { fg = "#f7768e", bold = true })
-      vim.api.nvim_set_hl(0, "FkNotesBlueButton", { fg = "#7dcfff", bold = true })
-    end,
-  })
 
-  -- User commands
-  vim.api.nvim_create_user_command("FKNotes", function()
-    require("fknotes.ui.menu").open_main_menu()
-  end, {})
-
+  -- Create user command
   vim.api.nvim_create_user_command("FkNotes", function()
     require("fknotes.ui.menu").open_main_menu()
   end, {})
 
   -- Keymap
-  vim.keymap.set("n", "<Leader>fn", function()
+  vim.keymap.set("n", "<leader>fn", function()
     require("fknotes.ui.menu").open_main_menu()
   end, { desc = "Open FKNotes Menu" })
 end
 
-return M
+return m
+

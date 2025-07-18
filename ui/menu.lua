@@ -40,16 +40,22 @@ function m.open_main_menu()
 
   local menu_lines = {
 <<<<<<< HEAD
+<<<<<<< HEAD
     line():append("📝 Create New Task", "identifier"),
     line():append("🔍  View Tasks", "function"),
     line():append("📓  Create New Note", "statement"),
     line():append("🔖 Browse All Notes", "type"),
 =======
+=======
+>>>>>>> e66b27e (New Menu UI for  FkNotes)
     line():append("📝 Create new task", "identifier"),
     line():append("🔍  View tasks", "function"),
     line():append("📓  Create new note", "statement"),
     line():append("🔖 Browse all notes", "type"),
+<<<<<<< HEAD
 >>>>>>> 45abf25db728e17fd14a8d7ad95dde77df09e2eb
+=======
+>>>>>>> e66b27e (New Menu UI for  FkNotes)
   }
 
   local help_line = line()
