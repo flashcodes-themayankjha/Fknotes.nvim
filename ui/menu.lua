@@ -39,10 +39,10 @@ function m.open_main_menu()
   })
 
   local menu_lines = {
-    line():append("  Create new task", "identifier"),
-    line():append("  View tasks", "function"),
-    line():append("󰎞  Create new note", "statement"),
-    line():append("  Browse all notes", "type"),
+    line():append("📝 Create new task", "identifier"),
+    line():append("🔍  View tasks", "function"),
+    line():append("📓  Create new note", "statement"),
+    line():append("🔖 Browse all notes", "type"),
   }
 
   local help_line = line()
