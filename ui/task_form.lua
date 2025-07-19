@@ -3,6 +3,7 @@ local Popup = require("nui.popup")
 local Text = require("nui.text")
 local event = require("nui.utils.autocmd").event
 local priority_selector = require("fknotes.ui.priority_selector")
+local storage = require("fknotes.core.storage")
 
 local task_form = {}
 
@@ -11,7 +12,7 @@ local fields = {
   { label = "📄 Description", key = "description", value = "" },
   { label = "📅 Due Date", key = "due_date", value = "" },
   { label = "✨ Priority", key = "priority", value = "" },
-  { label = "🏷️ Tags", key = "tags", value = {} }, -- multi-tag input
+  { label = "🏷️ Tags", key = "tags", value = {} },
 }
 
 local current_index = 1
@@ -25,6 +26,37 @@ end
 local function restore_global_cursor_arrow()
   vim.g.fknotes_arrow_disabled = false
   vim.api.nvim_exec_autocmds("CursorMoved", {})
+end
+
+local function is_valid()
+  for _, field in ipairs(fields) do
+    if field.key == "title" and (not field.value or field.value == "") then
+      vim.notify("❌ Title is required!", vim.log.levels.ERROR)
+      return false
+    end
+  end
+  return true
+end
+
+local function save_task()
+  if not is_valid() then return end
+
+  local task = {}
+
+  for _, field in ipairs(fields) do
+    task[field.key] = field.value
+  end
+
+  -- Add creation timestamp
+  task["created_at"] = os.date("%Y-%m-%d %H:%M:%S")
+
+  local all_tasks = storage.read_tasks()
+  table.insert(all_tasks, task)
+  storage.write_tasks(all_tasks)
+
+  vim.notify("✅ Task saved!", vim.log.levels.INFO)
+  popup:unmount()
+  restore_global_cursor_arrow()
 end
 
 local function render_form()
@@ -48,7 +80,7 @@ local function render_form()
   end
 
   table.insert(lines, "")
-  table.insert(lines, "   [↵ Edit]   [j/k] Navigate   [Esc] Quit")
+  table.insert(lines, "   [↵] Edit   [j/k] Navigate   [s] Save   [Esc] Quit")
 
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
@@ -62,8 +94,8 @@ function task_form.new_task()
   popup = Popup({
     position = "50%",
     size = {
-      width = 50,
-      height = 15,
+      width = 60,
+      height = 17,
     },
     enter = true,
     focusable = true,
@@ -86,6 +118,7 @@ function task_form.new_task()
   disable_global_cursor_arrow()
   render_form()
 
+  -- Navigation
   local function nav_down()
     current_index = (current_index % #fields) + 1
     render_form()
@@ -100,12 +133,15 @@ function task_form.new_task()
   popup:map("n", "<down>", nav_down, { noremap = true })
   popup:map("n", "k", nav_up, { noremap = true })
   popup:map("n", "<up>", nav_up, { noremap = true })
+  popup:map("n", "s", save_task, { noremap = true })
 
+  -- Quit
   popup:map("n", "<esc>", function()
     popup:unmount()
     restore_global_cursor_arrow()
   end, { noremap = true })
 
+  -- Edit Field
   popup:map("n", "<cr>", function()
     local field = fields[current_index]
 
