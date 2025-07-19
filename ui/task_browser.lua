@@ -9,15 +9,15 @@ local popup
 local tasks = {}
 local current_index = 1
 
--- Format task with optional arrow if selected
+-- format task with optional arrow if selected
 local function format_task(task, index, is_selected)
-  local prefix = is_selected and "" or string.format("%2d.", index)
-  local title = task.title or "(No Title)"
+  local prefix = is_selected and " ➤ " or string.format("%2d.", index)
+  local title = task.title or "(no title)"
   local priority = task.priority or "-"
   return string.format(" %s  %-50s %-8s", prefix, title, priority)
 end
 
--- Render task list with highlight and local arrow
+-- render task list with highlight and local arrow
 local function render_tasks()
   local lines = {}
   for i, task in ipairs(tasks) do
