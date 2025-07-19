@@ -1,30 +1,43 @@
 
 local M = {}
 
-local json = vim.fn.stdpath("data") .. "/fknotes/tasks.json"
+local uv = vim.loop
+local json = vim.fn.json_encode
+local decode = vim.fn.json_decode
 
--- Ensure folder and empty JSON file exists
-function M._ensure_file()
-  if vim.fn.filereadable(json) == 0 then
-    vim.fn.mkdir(vim.fn.fnamemodify(json, ":h"), "p")
-    vim.fn.writefile({ "{}" }, json) -- empty JSON object
+local data_path = vim.fn.stdpath("data") .. "/fknotes"
+local file_path = data_path .. "/tasks.json"
+
+-- Ensure directory exists
+local function ensure_dir()
+  if vim.fn.isdirectory(data_path) == 0 then
+    vim.fn.mkdir(data_path, "p")
   end
 end
 
--- Load tasks from JSON file
-function M.load_tasks()
-  M._ensure_file()
-  local ok, data = pcall(vim.fn.readfile, json)
-  if not ok or not data then return {} end
-  local decoded = vim.fn.json_decode(table.concat(data, "\n"))
-  return decoded or {}
+-- Read tasks from file
+function M.read_tasks()
+  ensure_dir()
+  local fd = io.open(file_path, "r")
+  if not fd then return {} end
+
+  local content = fd:read("*a")
+  fd:close()
+
+  local ok, result = pcall(decode, content)
+  return ok and result or {}
 end
 
--- Save tasks to JSON file
-function M.save_tasks(tasks)
-  M._ensure_file()
-  local json_string = vim.fn.json_encode(tasks)
-  vim.fn.writefile({ json_string }, json)
+-- Write tasks to file
+function M.write_tasks(tasks)
+  ensure_dir()
+  local fd = io.open(file_path, "w")
+  if not fd then
+    vim.notify("FKNotes: Failed to write task data", vim.log.levels.ERROR)
+    return
+  end
+  fd:write(json(tasks))
+  fd:close()
 end
 
 return M
