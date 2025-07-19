@@ -2,6 +2,7 @@
 local Popup = require("nui.popup")
 local Text = require("nui.text")
 local event = require("nui.utils.autocmd").event
+local priority_selector = require("fknotes.ui.priority_selector")
 
 local task_form = {}
 
@@ -9,23 +10,21 @@ local fields = {
   { label = "📝 Title", key = "title", value = "" },
   { label = "📄 Description", key = "description", value = "" },
   { label = "📅 Due Date", key = "due_date", value = "" },
-  { label = "⚡ Priority", key = "priority", value = "" },
-  { label = "🏷️ Tags", key = "tags", value = "" },
+  { label = "✨ Priority", key = "priority", value = "" },
+  { label = "🏷️ Tags", key = "tags", value = {} }, -- multi-tag input
 }
 
 local current_index = 1
 local popup
 
--- Disable global cursor arrow (if active)
 local function disable_global_cursor_arrow()
   vim.fn.sign_unplace("cursor_arrow")
   vim.g.fknotes_arrow_disabled = true
 end
 
--- Restore global cursor arrow (if needed)
 local function restore_global_cursor_arrow()
   vim.g.fknotes_arrow_disabled = false
-  vim.api.nvim_exec_autocmds("CursorMoved", {}) -- force re-eval
+  vim.api.nvim_exec_autocmds("CursorMoved", {})
 end
 
 local function render_form()
@@ -37,7 +36,14 @@ local function render_form()
 
   for i, field in ipairs(fields) do
     local arrow = (i == current_index) and "➤" or " "
-    local val = field.value ~= "" and (": " .. field.value) or ""
+    local val = ""
+
+    if field.key == "tags" and type(field.value) == "table" then
+      val = #field.value > 0 and (": " .. table.concat(field.value, ", ")) or ""
+    elseif field.value ~= "" then
+      val = ": " .. field.value
+    end
+
     table.insert(lines, string.format("  %s %s %s", arrow, field.label, val))
   end
 
@@ -65,7 +71,7 @@ function task_form.new_task()
       style = "rounded",
       text = {
         top = Text(" Create New Task ", "Title"),
-        bottom = Text(" [FkNotes Task Form] ", "Comment"),
+        bottom = Text("   Powered by Neovim and FKvim ", "Comment"),
       },
     },
     win_options = {
@@ -80,13 +86,12 @@ function task_form.new_task()
   disable_global_cursor_arrow()
   render_form()
 
-  -- Keymaps
-  local nav_down = function()
+  local function nav_down()
     current_index = (current_index % #fields) + 1
     render_form()
   end
 
-  local nav_up = function()
+  local function nav_up()
     current_index = (current_index - 2 + #fields) % #fields + 1
     render_form()
   end
@@ -103,12 +108,35 @@ function task_form.new_task()
 
   popup:map("n", "<cr>", function()
     local field = fields[current_index]
-    vim.ui.input({ prompt = field.label .. ": " }, function(input)
-      if input then
-        field.value = input
+
+    if field.key == "priority" then
+      priority_selector.open_priority_picker(function(selected)
+        field.value = selected.label
         render_form()
+      end)
+
+    elseif field.key == "tags" then
+      local function ask_tag()
+        vim.ui.input({ prompt = "Add Tag (leave blank to finish): " }, function(input)
+          if input and input ~= "" then
+            table.insert(field.value, input)
+            render_form()
+            ask_tag()
+          else
+            render_form()
+          end
+        end)
       end
-    end)
+      ask_tag()
+
+    else
+      vim.ui.input({ prompt = field.label .. ": " }, function(input)
+        if input then
+          field.value = input
+          render_form()
+        end
+      end)
+    end
   end, { noremap = true })
 
   popup:on(event.BufLeave, function()
