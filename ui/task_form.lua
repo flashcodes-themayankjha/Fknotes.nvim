@@ -4,6 +4,7 @@ local Text = require("nui.text")
 local event = require("nui.utils.autocmd").event
 local priority_selector = require("fknotes.ui.priority_selector")
 local storage = require("fknotes.core.storage")
+local exporter = require("fknotes.core.export")
 
 local task_form = {}
 
@@ -38,26 +39,26 @@ local function is_valid()
   return true
 end
 
+
 local function save_task()
   if not is_valid() then return end
 
   local task = {}
-
   for _, field in ipairs(fields) do
     task[field.key] = field.value
   end
-
-  -- Add creation timestamp
-  task["created_at"] = os.date("%Y-%m-%d %H:%M:%S")
+  task.created_at = os.date("%Y-%m-%d %H:%M:%S")
 
   local all_tasks = storage.read_tasks()
   table.insert(all_tasks, task)
   storage.write_tasks(all_tasks)
+  exporter.export_task(task)   -- ← EXPORT TO OBSIDIAN
 
   vim.notify("✅ Task saved!", vim.log.levels.INFO)
   popup:unmount()
   restore_global_cursor_arrow()
 end
+
 
 local function render_form()
   local lines = {
