@@ -21,7 +21,7 @@ When used with FKvim, FKNotes benefits from:
 
 ## Installation
 
-Install FKNot I’m now attaching my Aadhaar card, which is a valid government-issued ID for Indian citizens. My name “Mayank Jha” matches the ID, except for the missing middle name,es I’m now attaching my Aadhaar card, which is a valid government-issued ID for Indian citizens. My name “Mayank Jha” matches the ID, except for the missing middle name, using your favorite plugin manager.
+Install FKNotes 
 
 **Packer:**
 
