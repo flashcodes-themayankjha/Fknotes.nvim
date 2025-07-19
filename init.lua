@@ -1,21 +1,27 @@
-local m = {}
 
-function m.setup()
-  -- Load FKNotes highlight colors from fknotes/ui/colorscheme.lua
+local M = {}
+
+function M.setup()
+  -- Load FKNotes highlight colors
   require("fknotes.ui.colorscheme").setup()
 
-
-
-  -- Create user command
+  -- Main menu command and keymap
   vim.api.nvim_create_user_command("FkNotes", function()
     require("fknotes.ui.menu").open_main_menu()
   end, {})
 
-  -- Keymap
   vim.keymap.set("n", "<leader>fn", function()
     require("fknotes.ui.menu").open_main_menu()
   end, { desc = "Open FKNotes Menu" })
+
+  -- New task command and keymap
+  vim.api.nvim_create_user_command("FkNewTask", function()
+    require("fknotes.ui.task_form").new_task()
+  end, {})
+
+  vim.keymap.set("n", "<leader>nt", function()
+    require("fknotes.ui.task_form").new_task()
+  end, { desc = "Create New FKNotes Task" })
 end
 
-return m
-
+return M
