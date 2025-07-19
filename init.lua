@@ -2,34 +2,62 @@
 local M = {}
 
 function M.setup()
-  -- Load FKNotes highlight colors
-  require("fknotes.ui.colorscheme").setup()
+  -- Load colors
+  local ok_colors = pcall(require, "fknotes.ui.colorscheme")
+  if ok_colors then
+    require("fknotes.ui.colorscheme").setup()
+  else
+    vim.notify("[FkNotes] colorscheme module not found", vim.log.levels.WARN)
+  end
 
-  -- Main menu command and keymap
+  -- Define helper to safely require modules
+  local function safe_require(module, fn)
+    local ok, mod = pcall(require, module)
+    if ok then
+      fn(mod)
+    else
+      vim.notify("[FkNotes] Failed to load " .. module, vim.log.levels.ERROR)
+    end
+  end
+
+  -- Main Menu
   vim.api.nvim_create_user_command("FkNotes", function()
-    require("fknotes.ui.menu").open_main_menu()
+    safe_require("fknotes.ui.menu", function(menu)
+      menu.open_main_menu()
+     end)
   end, {})
 
   vim.keymap.set("n", "<leader>fn", function()
-    require("fknotes.ui.menu").open_main_menu()
+    safe_require("fknotes.ui.menu", function(menu)
+      menu.open_main_menu()
+    end)
   end, { desc = "Open FKNotes Menu" })
 
-  -- New task command and keymap
+  -- New Task
   vim.api.nvim_create_user_command("FkNewTask", function()
-    require("fknotes.ui.task_form").new_task()
+    safe_require("fknotes.ui.task_form", function(form)
+      form.new_task()
+    end)
   end, {})
 
   vim.keymap.set("n", "<leader>nt", function()
-    require("fknotes.ui.task_form").new_task()
+    safe_require("fknotes.ui.task_form", function(form)
+      form.new_task()
+    end)
   end, { desc = "Create New FKNotes Task" })
 
-   vim.api.nvim_create_user_command("FkAllTasks", function()
-    require("fknotes.ui.task_browser").show_browser()
-   end, {})
-   
-  vim.keymap.set("n","<leader>at",function ()
-    require("fknotes.ui.task_browser").show_browser()
-  end,{ desc = "Browse ALl Tasks" })
+ -- Browse All Tasks
+  vim.api.nvim_create_user_command("FkAllTasks", function()
+    safe_require("fknotes.ui.task_browser", function(browser)
+      browser.show_browser()
+    end)
+  end, {})
+
+  vim.keymap.set("n", "<leader>ln", function()
+    safe_require("fknotes.ui.task_browser", function(browser)
+      browser.show_browser()
+    end)
+  end, { desc = "Browse All FKNotes Tasks" })
 end
 
 return M
