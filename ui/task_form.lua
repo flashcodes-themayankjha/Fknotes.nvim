@@ -67,7 +67,7 @@ local function render_form()
   }
 
   for i, field in ipairs(fields) do
-    local arrow = (i == current_index) and "➤" or " "
+    local arrow = (i == current_index) and " ➤ " or " "
     local val = ""
 
     if field.key == "tags" and type(field.value) == "table" then
