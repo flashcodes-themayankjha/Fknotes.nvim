@@ -22,6 +22,14 @@ function M.setup()
   vim.keymap.set("n", "<leader>nt", function()
     require("fknotes.ui.task_form").new_task()
   end, { desc = "Create New FKNotes Task" })
+
+   vim.api.nvim_create_user_command("FkAllTasks", function()
+    require("fknotes.ui.task_browser").show_browser()
+   end, {})
+   
+  vim.keymap.set("n","<leader>at",function ()
+    require("fknotes.ui.task_browser").show_browser()
+  end,{ desc = "Browse ALl Tasks" })
 end
 
 return M
