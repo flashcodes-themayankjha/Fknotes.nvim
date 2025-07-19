@@ -16,16 +16,22 @@ local fields = {
   { label = "🏷️ Tags", key = "tags", value = {} },
 }
 
--- Define custom highlight styles (Catppuccin colors)
-local function define_highlights()
-  -- New header and footer specific groups
-  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true }) -- Yellowish
-  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true }) -- Soft Green
-  vim.api.nvim_set_hl(0,"FkNotesFooter2",{fg="#a6d189", italic=true})
-end
-
 local current_index = 1
 local popup
+
+-- 🔧 Define custom highlight styles
+local function define_highlights()
+  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true })    -- Yellowish
+  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true })  -- Soft blue
+  vim.api.nvim_set_hl(0, "FkNotesFooter2", { fg = "#a6d189", italic = true })  -- Soft green
+end
+
+-- 🔄 Clear all field values
+local function clear_fields()
+  for _, field in ipairs(fields) do
+    field.value = field.key == "tags" and {} or ""
+  end
+end
 
 local function disable_global_cursor_arrow()
   vim.fn.sign_unplace("cursor_arrow")
@@ -37,12 +43,25 @@ local function restore_global_cursor_arrow()
   vim.api.nvim_exec_autocmds("CursorMoved", {})
 end
 
--- Basic validation (just title required for now)
+-- 🔍 Field validation (title required, no duplicate, due_date format)
 local function is_valid()
+  local titles = {}
+  for _, task in ipairs(storage.read_tasks()) do
+    if task.title then
+      titles[task.title:lower()] = true
+    end
+  end
+
   for _, field in ipairs(fields) do
-    if field.key == "title" and (not field.value or field.value == "") then
-      vim.notify("❌ Title is required!", vim.log.levels.ERROR)
-      return false
+    if field.key == "title" then
+      if not field.value or field.value == "" then
+        vim.notify("❌ Title is required!", vim.log.levels.ERROR)
+        return false
+      end
+      if titles[field.value:lower()] then
+        vim.notify("⚠️ A task with this title already exists!", vim.log.levels.WARN)
+        return false
+      end
     end
 
     if field.key == "due_date" and field.value ~= "" then
@@ -53,9 +72,11 @@ local function is_valid()
       end
     end
   end
+
   return true
 end
 
+-- 💾 Save task and clear the form
 local function save_task()
   if not is_valid() then return end
 
@@ -71,10 +92,13 @@ local function save_task()
   exporter.export_task(task)
 
   vim.notify("✅ Task saved!", vim.log.levels.INFO)
+
+  clear_fields()  -- 👈 Clear fields after save
   popup:unmount()
   restore_global_cursor_arrow()
 end
 
+-- 🎨 Render task input form
 local function render_form()
   local lines = {
     "",
@@ -99,7 +123,7 @@ local function render_form()
   table.insert(lines, "")
   table.insert(lines, "")
   table.insert(lines, "")
-  table.insert(lines, "   🖋️Edit[↵]   🧭Navigate [j/k]  💾 Save[s]  ❌ Quit [Esc]" )
+  table.insert(lines, "   🖋️Edit[↵]   🧭Navigate [j/k]  💾 Save[s]  ❌ Quit [Esc]")
 
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
@@ -108,17 +132,15 @@ local function render_form()
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
+-- 🪟 Open popup
 function task_form.new_task()
+  clear_fields()      -- 👈 Ensure clean state on new open
   current_index = 1
-
   define_highlights()
 
   popup = Popup({
     position = "50%",
-    size = {
-      width = 60,
-      height = 17,
-    },
+    size = { width = 60, height = 17 },
     enter = true,
     focusable = true,
     border = {
@@ -133,7 +155,7 @@ function task_form.new_task()
       cursorline = false,
       number = false,
       relativenumber = false,
-    },
+    }
   })
 
   popup:mount()
@@ -169,6 +191,7 @@ function task_form.new_task()
         field.value = selected.label
         render_form()
       end)
+
     elseif field.key == "tags" then
       local function ask_tag()
         vim.ui.input({ prompt = "Add Tag (leave blank to finish): " }, function(input)
@@ -176,10 +199,13 @@ function task_form.new_task()
             table.insert(field.value, input)
             render_form()
             ask_tag()
-          else render_form() end
+          else
+            render_form()
+          end
         end)
       end
       ask_tag()
+
     else
       vim.ui.input({ prompt = field.label .. ": " }, function(input)
         if input then
