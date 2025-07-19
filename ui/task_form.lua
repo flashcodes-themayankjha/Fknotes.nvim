@@ -16,6 +16,14 @@ local fields = {
   { label = "🏷️ Tags", key = "tags", value = {} },
 }
 
+-- Define custom highlight styles (Catppuccin colors)
+local function define_highlights()
+  -- New header and footer specific groups
+  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true }) -- Yellowish
+  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true }) -- Soft Green
+  vim.api.nvim_set_hl(0,"FkNotesFooter2",{fg="#a6d189", italic=true})
+end
+
 local current_index = 1
 local popup
 
@@ -29,16 +37,24 @@ local function restore_global_cursor_arrow()
   vim.api.nvim_exec_autocmds("CursorMoved", {})
 end
 
+-- Basic validation (just title required for now)
 local function is_valid()
   for _, field in ipairs(fields) do
     if field.key == "title" and (not field.value or field.value == "") then
       vim.notify("❌ Title is required!", vim.log.levels.ERROR)
       return false
     end
+
+    if field.key == "due_date" and field.value ~= "" then
+      local y, m, d = field.value:match("^(%d+)%-(%d+)%-(%d+)$")
+      if not (y and m and d) then
+        vim.notify("⚠️ Due Date must be in format YYYY-MM-DD", vim.log.levels.WARN)
+        return false
+      end
+    end
   end
   return true
 end
-
 
 local function save_task()
   if not is_valid() then return end
@@ -52,13 +68,12 @@ local function save_task()
   local all_tasks = storage.read_tasks()
   table.insert(all_tasks, task)
   storage.write_tasks(all_tasks)
-  exporter.export_task(task)   -- ← EXPORT TO OBSIDIAN
+  exporter.export_task(task)
 
   vim.notify("✅ Task saved!", vim.log.levels.INFO)
   popup:unmount()
   restore_global_cursor_arrow()
 end
-
 
 local function render_form()
   local lines = {
@@ -81,16 +96,22 @@ local function render_form()
   end
 
   table.insert(lines, "")
-  table.insert(lines, "   [↵] Edit   [j/k] Navigate   [s] Save   [Esc] Quit")
+  table.insert(lines, "")
+  table.insert(lines, "")
+  table.insert(lines, "")
+  table.insert(lines, "   🖋️Edit[↵]   🧭Navigate [j/k]  💾 Save[s]  ❌ Quit [Esc]" )
 
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_buf_add_highlight(buf, -1, "FkNotesFooter", #lines - 1, 0, -1)
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
 function task_form.new_task()
   current_index = 1
+
+  define_highlights()
 
   popup = Popup({
     position = "50%",
@@ -103,8 +124,8 @@ function task_form.new_task()
     border = {
       style = "rounded",
       text = {
-        top = Text(" Create New Task ", "Title"),
-        bottom = Text("   Powered by Neovim and FKvim ", "Comment"),
+        top = Text(" Create New Task ", "FkNotesHeader"),
+        bottom = Text("   Powered by Neovim and FKvim ", "FkNotesFooter2"),
       },
     },
     win_options = {
@@ -119,7 +140,6 @@ function task_form.new_task()
   disable_global_cursor_arrow()
   render_form()
 
-  -- Navigation
   local function nav_down()
     current_index = (current_index % #fields) + 1
     render_form()
@@ -131,18 +151,16 @@ function task_form.new_task()
   end
 
   popup:map("n", "j", nav_down, { noremap = true })
-  popup:map("n", "<down>", nav_down, { noremap = true })
   popup:map("n", "k", nav_up, { noremap = true })
+  popup:map("n", "<down>", nav_down, { noremap = true })
   popup:map("n", "<up>", nav_up, { noremap = true })
   popup:map("n", "s", save_task, { noremap = true })
 
-  -- Quit
   popup:map("n", "<esc>", function()
     popup:unmount()
     restore_global_cursor_arrow()
   end, { noremap = true })
 
-  -- Edit Field
   popup:map("n", "<cr>", function()
     local field = fields[current_index]
 
@@ -151,7 +169,6 @@ function task_form.new_task()
         field.value = selected.label
         render_form()
       end)
-
     elseif field.key == "tags" then
       local function ask_tag()
         vim.ui.input({ prompt = "Add Tag (leave blank to finish): " }, function(input)
@@ -159,13 +176,10 @@ function task_form.new_task()
             table.insert(field.value, input)
             render_form()
             ask_tag()
-          else
-            render_form()
-          end
+          else render_form() end
         end)
       end
       ask_tag()
-
     else
       vim.ui.input({ prompt = field.label .. ": " }, function(input)
         if input then
