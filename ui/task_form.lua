@@ -17,16 +17,17 @@ local fields = {
 }
 
 local current_index = 1
-local popup
+local popup = nil
+local task_saved = false -- Track save status
 
--- 🔧 Define custom highlight styles
+-- Define Catppuccin-style header/footer highlights
 local function define_highlights()
-  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true })    -- Yellowish
-  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true })  -- Soft blue
-  vim.api.nvim_set_hl(0, "FkNotesFooter2", { fg = "#a6d189", italic = true })  -- Soft green
+  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true })   -- Yellowish
+  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true }) -- Soft blue
+  vim.api.nvim_set_hl(0, "FkNotesFooter2", { fg = "#a6d189", italic = true }) -- Soft green
 end
 
--- 🔄 Clear all field values
+-- Clear field values (called only after save)
 local function clear_fields()
   for _, field in ipairs(fields) do
     field.value = field.key == "tags" and {} or ""
@@ -43,10 +44,12 @@ local function restore_global_cursor_arrow()
   vim.api.nvim_exec_autocmds("CursorMoved", {})
 end
 
--- 🔍 Field validation (title required, no duplicate, due_date format)
+-- Input validation
 local function is_valid()
+  local all_tasks = storage.read_tasks()
   local titles = {}
-  for _, task in ipairs(storage.read_tasks()) do
+
+  for _, task in ipairs(all_tasks) do
     if task.title then
       titles[task.title:lower()] = true
     end
@@ -76,7 +79,7 @@ local function is_valid()
   return true
 end
 
--- 💾 Save task and clear the form
+-- Save the task
 local function save_task()
   if not is_valid() then return end
 
@@ -89,16 +92,17 @@ local function save_task()
   local all_tasks = storage.read_tasks()
   table.insert(all_tasks, task)
   storage.write_tasks(all_tasks)
+  task_saved = true
   exporter.export_task(task)
 
   vim.notify("✅ Task saved!", vim.log.levels.INFO)
 
-  clear_fields()  -- 👈 Clear fields after save
+  clear_fields() -- Only clear after saving
   popup:unmount()
   restore_global_cursor_arrow()
 end
 
--- 🎨 Render task input form
+-- Redraw the form
 local function render_form()
   local lines = {
     "",
@@ -111,7 +115,7 @@ local function render_form()
     local val = ""
 
     if field.key == "tags" and type(field.value) == "table" then
-      val = #field.value > 0 and (": " .. table.concat(field.value, ", ")) or ""
+      val = (#field.value > 0 and (": " .. table.concat(field.value, ", ")) or "")
     elseif field.value ~= "" then
       val = ": " .. field.value
     end
@@ -132,10 +136,10 @@ local function render_form()
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
--- 🪟 Open popup
+-- Main entry
 function task_form.new_task()
-  clear_fields()      -- 👈 Ensure clean state on new open
   current_index = 1
+  task_saved = false -- Reset save status
   define_highlights()
 
   popup = Popup({
@@ -155,7 +159,7 @@ function task_form.new_task()
       cursorline = false,
       number = false,
       relativenumber = false,
-    }
+    },
   })
 
   popup:mount()
@@ -176,9 +180,13 @@ function task_form.new_task()
   popup:map("n", "k", nav_up, { noremap = true })
   popup:map("n", "<down>", nav_down, { noremap = true })
   popup:map("n", "<up>", nav_up, { noremap = true })
+
   popup:map("n", "s", save_task, { noremap = true })
 
   popup:map("n", "<esc>", function()
+    if not task_saved then
+      vim.notify("⚠️ FKNotes form closed without saving", vim.log.levels.WARN)
+    end
     popup:unmount()
     restore_global_cursor_arrow()
   end, { noremap = true })
@@ -191,7 +199,6 @@ function task_form.new_task()
         field.value = selected.label
         render_form()
       end)
-
     elseif field.key == "tags" then
       local function ask_tag()
         vim.ui.input({ prompt = "Add Tag (leave blank to finish): " }, function(input)
@@ -205,7 +212,6 @@ function task_form.new_task()
         end)
       end
       ask_tag()
-
     else
       vim.ui.input({ prompt = field.label .. ": " }, function(input)
         if input then
@@ -217,6 +223,9 @@ function task_form.new_task()
   end, { noremap = true })
 
   popup:on(event.BufLeave, function()
+    if not task_saved then
+      vim.notify("⚠️ FKNotes form closed without saving", vim.log.levels.WARN)
+    end
     popup:unmount()
     restore_global_cursor_arrow()
   end)
