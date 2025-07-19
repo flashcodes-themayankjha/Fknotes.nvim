@@ -47,7 +47,7 @@ function m.open_main_menu()
     {
       label = "🔍 View Tasks",
       action = function()
-        require("fknotes.ui.task_browser").open()
+        require("fknotes.ui.task_browser").show_browser()
       end,
     },
     {
