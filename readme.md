@@ -21,18 +21,18 @@ When used with FKvim, FKNotes benefits from:
 
 ## Installation
 
-Install FKNotes using your favorite plugin manager.
+Install FKNot I’m now attaching my Aadhaar card, which is a valid government-issued ID for Indian citizens. My name “Mayank Jha” matches the ID, except for the missing middle name,es I’m now attaching my Aadhaar card, which is a valid government-issued ID for Indian citizens. My name “Mayank Jha” matches the ID, except for the missing middle name, using your favorite plugin manager.
 
 **Packer:**
 
 ```lua
-use 'mayankjha-personal/fknotes.nvim'
+use 'flashcodes-themayankjha/Fknotes.nvim'
 ```
 
 **vim-plug:**
 
 ```vim
-Plug 'mayankjha-personal/fknotes.nvim'
+Plug 'flashcodes-themayankjha/Fknotes.nvim'
 ```
 
 ## Usage
