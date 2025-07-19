@@ -62,7 +62,7 @@ local function is_valid()
         return false
       end
       if titles[field.value:lower()] then
-        vim.notify("⚠️ A task with this title already exists!", vim.log.levels.WARN)
+        vim.notify("A task with this title already exists!", vim.log.levels.WARN)
         return false
       end
     end
@@ -70,7 +70,7 @@ local function is_valid()
     if field.key == "due_date" and field.value ~= "" then
       local y, m, d = field.value:match("^(%d+)%-(%d+)%-(%d+)$")
       if not (y and m and d) then
-        vim.notify("⚠️ Due Date must be in format YYYY-MM-DD", vim.log.levels.WARN)
+        vim.notify("Due Date must be in format YYYY-MM-DD", vim.log.levels.WARN)
         return false
       end
     end
@@ -111,7 +111,7 @@ local function render_form()
   }
 
   for i, field in ipairs(fields) do
-    local arrow = (i == current_index) and " ➤ " or " "
+    local arrow = (i == current_index) and " ➤" or " "
     local val = ""
 
     if field.key == "tags" and type(field.value) == "table" then
@@ -185,7 +185,7 @@ function task_form.new_task()
 
   popup:map("n", "<esc>", function()
     if not task_saved then
-      vim.notify("⚠️ FKNotes form closed without saving", vim.log.levels.WARN)
+      vim.notify("FKNotes form closed without saving", vim.log.levels.WARN)
     end
     popup:unmount()
     restore_global_cursor_arrow()
@@ -224,7 +224,7 @@ function task_form.new_task()
 
   popup:on(event.BufLeave, function()
     if not task_saved then
-      vim.notify("⚠️ FKNotes form closed without saving", vim.log.levels.WARN)
+      vim.notify("FKNotes form closed without saving", vim.log.levels.WARN)
     end
     popup:unmount()
     restore_global_cursor_arrow()
