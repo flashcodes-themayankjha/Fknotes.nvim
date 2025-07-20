@@ -46,14 +46,6 @@ git clone https://github.com/flashcodes-themayankjha/Fknotes.nvim.git ~/.config/
   
 ```
 
-## Screenshot
-
-<img width="1702" height="727" alt="image" src="https://github.com/user-attachments/assets/4360884d-c14a-4dd0-9baf-de57bb2c0080" />
-<em>Don't Allow Duplication <em>
-
-<img width="1706" height="724" alt="image" src="https://github.com/user-attachments/assets/db61151a-9de9-4345-b439-8f30285a0438" />
-<em> Easy and Fast Task Management <em>
-
 
 
 
