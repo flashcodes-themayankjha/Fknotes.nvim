@@ -21,7 +21,26 @@ When used with FKvim, FKNotes benefits from:
 
 ## Installation
 
-Install FKNotes 
+> Note: for now This plugin is under development, So nvim package manager wont be able to recognise this , so manually install it for 
+beta test and Star this repo for Stable versions 
+
+```shell
+git clone https://github.com/flashcodes-themayankjha/Fknotes.nvim.git ~/.config/nvim/lua/fknotes
+
+```
+
+```lua
+    {
+  dir = vim.fn.stdpath("config") .. "/lua/fknotes",
+  -- full path to your plugin repo
+  name = "fknotes",                   
+  config = function()
+    require("fknotes").setup()
+  end,
+  lazy = false,  -- load on startup (or use event = "VeryLazy" if you prefer)
+},
+
+```
 
 **Packer:**
 
