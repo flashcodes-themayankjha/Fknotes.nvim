@@ -20,7 +20,7 @@ function M.setup()
     title   = "#f0c6c6",
     grey    = "#939ab7",
     subtle  = "#585b70",
-    pink    = "#f5c2e7", -- for selected date
+    pink    = "#f5bde6", -- for selected date
   }
 
   -- Try getting from current theme, else fallback to Catppuccin
@@ -54,7 +54,12 @@ function M.setup()
   vim.api.nvim_set_hl(0, "FkNotesFooter2", { link = "FkNotesType" })
 
   -- Selected date in calendar
-  vim.api.nvim_set_hl(0, "FkNotesSelectedDate", { fg = pink, bold = true })
+    vim.api.nvim_set_hl(0, "FkNotesSelectedDate", {
+  fg = "#ffffff",       -- white text
+  bg = "pink",       -- pink background (Catppuccin pink)
+  bold = true
+})
+
 end
 
 return M
