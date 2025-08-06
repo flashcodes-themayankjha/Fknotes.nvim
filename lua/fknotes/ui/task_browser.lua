@@ -47,17 +47,13 @@ end
 
 -- Highlight group styles
 local function define_highlights()
--- Reference: Catppuccin Mocha palette (https://github.com/catppuccin/catppuccin)
-
-vim.api.nvim_set_hl(0, "FkNotesDone",    { fg = "#a6e3a1" })  -- Green (Success)
-vim.api.nvim_set_hl(0, "FkNotesSoon",    { fg = "#f9e2af" })  -- Yellow (Warning)
-vim.api.nvim_set_hl(0, "FkNotesExpired", { fg = "#f38ba8" })  -- Red (Urgent)
-vim.api.nvim_set_hl(0, "FkNotesPending", { fg = "#cdd6f4" })  -- Subtle White
-vim.api.nvim_set_hl(0, "FkNotesNone",    { fg = "#6c7086" })  -- Gray (Overlay)
-
--- Make header bold but use default foreground color (NO more blue):
-vim.api.nvim_set_hl(0, "FkNotesHeader",  { bold = true })
-
+  -- Link FkNotes highlight groups to standard Neovim highlight groups or Fknotes specific ones
+  vim.api.nvim_set_hl(0, "FkNotesDone",    { link = "FknotesType" }) -- Example: Link to a success-like color
+  vim.api.nvim_set_hl(0, "FkNotesSoon",    { link = "FknotesStatement" }) -- Example: Link to a warning-like color
+  vim.api.nvim_set_hl(0, "FkNotesExpired", { link = "FknotesFunction" }) -- Example: Link to an error-like color
+  vim.api.nvim_set_hl(0, "FkNotesPending", { link = "Normal" }) -- Example: Link to normal text color
+  vim.api.nvim_set_hl(0, "FkNotesNone",    { link = "Comment" }) -- Example: Link to comment color
+  vim.api.nvim_set_hl(0, "FkNotesHeader",  { link = "FknotesTitle" })
 end
 
 -- Render tasks + menu footer (scroll support)
@@ -137,12 +133,12 @@ function task_browser.show_browser()
     border = {
       style = "rounded",
       text = {
-        top = " FKvim Task Browser ",
-        bottom = "   Powered by Neovim + FKNotes ",
+        top = require("nui.text")(" FKvim Task Browser ", "FknotesTitle"),
+        bottom = require("nui.text")("   Powered by Neovim + FKNotes ", "FknotesComment"),
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:Comment",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
       cursorline = false,
       number = false,
       relativenumber = false,

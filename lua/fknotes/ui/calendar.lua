@@ -16,7 +16,7 @@ function M.open()
     border = {
       style = "rounded",
       text = {
-        top = " FKNotes Menu ",
+        top = require("nui.text")(" FKNotes Menu ", "FknotesTitle"),
         top_align = "center",
       },
     },

@@ -27,12 +27,12 @@ function M.open_priority_picker(callback)
     border = {
       style = "rounded",
       text = {
-        top = Text(" Select Priority ", "Title"),
-        bottom = Text(" [↑↓] Move  [Enter] Choose  [q] Quit ", "Comment"),
+        top = Text(" Select Priority ", "FknotesTitle"),
+        bottom = Text(" [↑↓] Move  [Enter] Choose  [q] Quit ", "FknotesComment"),
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:Comment",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
       cursorline = true,
     },
   })

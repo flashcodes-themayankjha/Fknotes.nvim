@@ -2,14 +2,15 @@
 local M = {}
 
 function M.setup()
-  vim.api.nvim_set_hl(0, "fknotesbluebutton", { fg = "#7dcfff", bold = true })
-  vim.api.nvim_set_hl(0, "fknotesredbutton", { fg = "#f7768e", bold = true })
-  vim.api.nvim_set_hl(0, "title", { fg = "#e5c890", bold = true })
-  vim.api.nvim_set_hl(0, "comment", { fg = "#5c5f77", italic = true })
-  vim.api.nvim_set_hl(0, "identifier", { fg = "#9ece6a", bold = true })
-  vim.api.nvim_set_hl(0, "function", { fg = "#7aa2f7" })
-  vim.api.nvim_set_hl(0, "statement", { fg = "#f7768e" })
-  vim.api.nvim_set_hl(0, "type", { fg = "#2ac3de" })
+  -- Link Fknotes highlight groups to standard Neovim highlight groups
+  vim.api.nvim_set_hl(0, "FknotesBlueButton", { link = "Button" })
+  vim.api.nvim_set_hl(0, "FknotesRedButton", { link = "ErrorMsg" })
+  vim.api.nvim_set_hl(0, "FknotesTitle", { link = "Title" })
+  vim.api.nvim_set_hl(0, "FknotesComment", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "FknotesIdentifier", { link = "Identifier" })
+  vim.api.nvim_set_hl(0, "FknotesFunction", { link = "Function" })
+  vim.api.nvim_set_hl(0, "FknotesStatement", { link = "Statement" })
+  vim.api.nvim_set_hl(0, "FknotesType", { link = "Type" })
 end
 
 return M

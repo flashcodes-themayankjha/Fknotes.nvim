@@ -22,9 +22,9 @@ local task_saved = false -- Track save status
 
 -- Define Catppuccin-style header/footer highlights
 local function define_highlights()
-  vim.api.nvim_set_hl(0, "FkNotesHeader",  { fg = "#f9e2af", bold = true })   -- Yellowish
-  vim.api.nvim_set_hl(0, "FkNotesFooter",  { fg = "#babbf1", italic = true }) -- Soft blue
-  vim.api.nvim_set_hl(0, "FkNotesFooter2", { fg = "#a6d189", italic = true }) -- Soft green
+  vim.api.nvim_set_hl(0, "FkNotesHeader",  { link = "FknotesTitle" })   -- Link to FknotesTitle
+  vim.api.nvim_set_hl(0, "FkNotesFooter",  { link = "FknotesComment" }) -- Link to FknotesComment
+  vim.api.nvim_set_hl(0, "FkNotesFooter2", { link = "FknotesType" }) -- Link to FknotesType
 end
 
 -- Clear field values (called only after save)

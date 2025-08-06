@@ -25,12 +25,12 @@ function m.open_main_menu()
         left = "│",
       },
       text = {
-        top = Text(" 🗂 FkNotes Main Menu ", "Title"),
-        bottom = Text(" Powered by Neovim and FKvim ", "Comment"),
+        top = Text(" 🗂 FkNotes Main Menu ", "FknotesTitle"),
+        bottom = Text(" Powered by Neovim and FKvim ", "FknotesComment"),
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:Comment",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
     },
     enter = true, -- ✅ auto-focus when opened
     focusable = true,
