@@ -22,9 +22,9 @@ local task_saved = false -- Track save status
 
 -- Define Catppuccin-style header/footer highlights
 local function define_highlights()
-  vim.api.nvim_set_hl(0, "FkNotesHeader",  { link = "FknotesTitle" })   -- Link to FknotesTitle
-  vim.api.nvim_set_hl(0, "FkNotesFooter",  { link = "FknotesComment" }) -- Link to FknotesComment
-  vim.api.nvim_set_hl(0, "FkNotesFooter2", { link = "FknotesType" }) -- Link to FknotesType
+  -- FkNotes highlight groups are now defined in colorscheme.lua
+  -- We just need to ensure they are loaded.
+  require("fknotes.ui.colorscheme").setup()
 end
 
 -- Clear field values (called only after save)
@@ -127,7 +127,7 @@ local function render_form()
   table.insert(lines, "")
   table.insert(lines, "")
   table.insert(lines, "")
-  table.insert(lines, "   🖋️Edit[↵]   🧭Navigate [j/k]  💾 Save[s]  ❌ Quit [Esc]")
+  table.insert(lines, " 🖋️Edit[↵]   🧭Navigate [j/k]  💾 Save[s]  ❌ Quit [Esc]")
 
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
@@ -155,7 +155,7 @@ function task_form.new_task()
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:Comment",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
       cursorline = false,
       number = false,
       relativenumber = false,
