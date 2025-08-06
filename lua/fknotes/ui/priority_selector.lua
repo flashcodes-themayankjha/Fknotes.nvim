@@ -33,7 +33,6 @@ function M.open_priority_picker(callback)
     },
     win_options = {
       winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
-      cursorline = true,
     },
   })
 
