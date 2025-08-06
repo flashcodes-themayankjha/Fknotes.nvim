@@ -54,12 +54,7 @@ function M.setup()
   vim.api.nvim_set_hl(0, "FkNotesFooter2", { link = "FkNotesType" })
 
   -- Selected date in calendar
-    vim.api.nvim_set_hl(0, "FkNotesSelectedDate", {
-  fg = "#ffffff",       -- white text
-  bg = "pink",       -- pink background (Catppuccin pink)
-  bold = true
-})
-
+    vim.api.nvim_set_hl(0, "FkNotesSelectedDate", {fg = "pink", bold = true })
 end
 
 return M
