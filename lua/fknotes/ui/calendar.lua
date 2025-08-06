@@ -21,7 +21,7 @@ function M.open()
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
     },
   }, {
     lines = {
@@ -38,7 +38,7 @@ function M.open()
     keymap = {
       focus_next = { "j", "<Down>" },
       focus_prev = { "k", "<Up>" },
-      close = { "<Esc>" },
+      iclose = { "<Esc>" },
       submit = { "<CR>" },
     },
     on_close = function()
