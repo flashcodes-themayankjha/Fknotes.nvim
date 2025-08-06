@@ -10,15 +10,15 @@ local current_date = os.date("*t") -- Current date table {year, month, day}
 local popup = nil
 local on_select_callback = nil
 
--- Helper to get days in a month
+-- ✅ Helper to get days in a month (fixed: convert to number)
 local function days_in_month(year, month)
-  local t = os.time({year = year, month = month + 1, day = 0})
-  return os.date("%d", t)
+  local t = os.time({ year = year, month = month + 1, day = 0 })
+  return tonumber(os.date("%d", t)) -- convert to number to avoid comparison errors
 end
 
 -- Helper to get the weekday of the first day of the month (0 for Sunday, 1 for Monday, etc.)
 local function first_weekday(year, month)
-  local t = os.time({year = year, month = month, day = 1})
+  local t = os.time({ year = year, month = month, day = 1 })
   return (os.date("%w", t) + 6) % 7 -- Adjust to 0 for Monday, 6 for Sunday
 end
 
@@ -30,7 +30,7 @@ local function render_calendar()
   local first_day_wday = first_weekday(year, month)
 
   local lines = {}
-  table.insert(lines, Text("  " .. os.date("%B %Y", os.time({year = year, month = month, day = 1})) .. "  ", "FkNotesHeader"))
+  table.insert(lines, Text("  " .. os.date("%B %Y", os.time({ year = year, month = month, day = 1 })) .. "  ", "FkNotesHeader"))
   table.insert(lines, "")
   table.insert(lines, "  Mo Tu We Th Fr Sa Su")
 
@@ -138,10 +138,9 @@ function M.open(callback)
   popup:map("n", "<left>", prev_month, { noremap = true })
   popup:map("n", "<right>", next_month, { noremap = true })
 
-  -- Day selection (simplified for now, will need more robust logic)
-  -- For now, let's just allow direct input or a simple way to select current day
+  -- Day selection (simplified)
   popup:map("n", "<cr>", function()
-    select_date(current_date.day) -- Select current day by default on Enter
+    select_date(current_date.day)
   end, { noremap = true })
 
   popup:map("n", "<esc>", function()
