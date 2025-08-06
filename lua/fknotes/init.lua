@@ -1,11 +1,57 @@
 
 local M = {}
 
-function M.setup()
+-- Deep merge utility function
+local function deep_merge(t1, t2)
+  for k, v in pairs(t2) do
+    if type(v) == "table" and type(t1[k]) == "table" then
+      t1[k] = deep_merge(t1[k], v)
+    else
+      t1[k] = v
+    end
+  end
+  return t1
+end
+
+M.config = {}
+
+function M.setup(opts)
+  opts = opts or {}
+
+  local defaults = {
+    default_note_dir = vim.fn.expand('~/notes'),
+    obsidian_path = nil,
+    default_task_priority = 'medium',
+    default_task_due_date = 'today',
+    ui = {
+      colorscheme = nil,
+      border_style = 'rounded',
+      menu_width = 80,
+      menu_height = 20,
+      task_browser_width = 100,
+      task_browser_height = 30,
+      task_form_width = 80,
+      task_form_height = 25,
+      date_picker_width = 34,
+      date_picker_height = 15,
+    },
+    storage = {
+      file_format = 'markdown',
+      tasks_subdir = 'tasks',
+      notes_subdir = 'notes',
+    },
+    export = {
+      default_format = 'markdown',
+      export_dir = vim.fn.expand('~/exported_notes'),
+    },
+  }
+
+  M.config = deep_merge(defaults, opts)
+
   -- Load colors
   local ok_colors = pcall(require, "fknotes.ui.colorscheme")
   if ok_colors then
-    require("fknotes.ui.colorscheme").setup()
+    require("fknotes.ui.colorscheme").setup(M.config.ui.colorscheme)
   else
     vim.notify("[FkNotes] colorscheme module not found", vim.log.levels.WARN)
   end
