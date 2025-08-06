@@ -141,7 +141,7 @@ function M.open(callback)
 
   popup = Popup({
     position = "50%",
-    size = { width = 30, height = 15 },
+    size = { width = 40, height = 20 },
     enter = true,
     focusable = true,
     border = {
