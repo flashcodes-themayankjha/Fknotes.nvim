@@ -50,18 +50,18 @@ function m.open_main_menu()
         require("fknotes.ui.task_browser").show_browser()
       end,
     },
-    {
-      label = "📓 Create New Note",
-      action = function()
-        require("fknotes.note_form").open()
-      end,
-    },
-    {
-      label = "🔖 Browse All Notes",
-      action = function()
-        require("fknotes.note_browser").open()
-      end,
-    },
+    -- {
+    --   label = "📓 Create New Note",
+    --   action = function()
+    --     require("fknotes.note_form").open()
+    --   end,
+    -- },
+    -- {
+    --   label = "🔖 Browse All Notes",
+    --   action = function()
+    --     require("fknotes.note_browser").open()
+    --   end,
+    -- }, -- TODO: Implement note_form and note_browser modules
   }
 
   local current_index = 1
