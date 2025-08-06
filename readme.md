@@ -5,6 +5,8 @@
 
 FkNotes.nvim is a powerful Neovim plugin designed to help you manage your notes, tasks, and knowledge base directly within your editor. It provides a seamless experience for creating, organizing, and interacting with your personal information, integrating features like task management, date picking, and priority selection.
 
+> This is Configured to use with [Fkvim](https://github.com/TheFlashCodes/FKvim)
+
 ## Features
 
 - **Task Management:** Create, view, and manage tasks with priorities and due dates.
@@ -183,7 +185,7 @@ nnoremap <leader>bt :FkBrowseTasks<CR>
 
 ## Contributing
 
-Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/flashcodes-mayankjha/Fknotes.nvim/issues).
+Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/flashcodes-themayankjha/Fknotes.nvim/issues).
 
 ## License
 
