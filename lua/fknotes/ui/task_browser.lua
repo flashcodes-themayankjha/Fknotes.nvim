@@ -118,16 +118,18 @@ function task_browser.show_browser()
   current_index = 1
   define_highlights()
 
+  local config = require("fknotes").config.ui
+
   popup = Popup({
     position = "50%",
     size = {
-      width = 80,
-      height = 20,
+      width = config.task_browser_width,
+      height = config.task_browser_height,
     },
     enter = true,
     focusable = true,
     border = {
-      style = "rounded",
+      style = config.border_style,
       text = {
         top = require("nui.text")("🗂️ FKvim Task Browser ", "FknotesTitle"),
         bottom = require("nui.text")(" ⚡ Powered by Neovim + FKNotes ", "FknotesComment"),
