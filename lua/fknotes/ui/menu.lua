@@ -1,3 +1,4 @@
+
 local NuiMenu = require("nui.menu")
 local event = require("nui.utils.autocmd").event
 local task_form = require("fknotes.ui.task_form")
@@ -6,44 +7,47 @@ local Text = require("nui.text")
 
 local M = {}
 
--- Main FKNotes Menu
 function M.open_main_menu()
   local menu = NuiMenu({
-    position = "50%",
+    position = {
+      row = "50%",
+      col = "50%",
+    },
     size = {
-      width = 40,
-      height = 10,
+      width = 50,
+      height = 11,
     },
     border = {
       style = "rounded",
       text = {
-        top = Text(" FKNotes Menu ", "FknotesTitle"),
+        top = Text(" 🗂️ FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
+        bottom = Text("  [j/k] Move • [Enter] Select • [Esc] Close ", "FkNotesFooter2"),
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment,CursorLine:Visual",
     },
   }, {
     lines = {
-      NuiMenu.item("📋  Add New Task"),
-      NuiMenu.item("📝  Add New Note"),
-      NuiMenu.item("📄  Browse All Notes"),
-      NuiMenu.item("✅  Browse All Tasks"),
+      NuiMenu.item("🎯   Add New Task"),
+      NuiMenu.item("📝   Add New Note"),
+      NuiMenu.item("📝 Browse All Notes"),
+      NuiMenu.item("🔎   Browse All Tasks"),
     },
     max_width = 40,
     separator = {
-      char = "-",
-      text_align = "right",
+      char = "─",
+      text_align = "center",
     },
     keymap = {
       focus_next = { "j", "<Down>" },
       focus_prev = { "k", "<Up>" },
-      iclose = { "<Esc>" },
+      close = { "<Esc>" },
       submit = { "<CR>" },
     },
     on_close = function()
-      vim.cmd("echo 'FKNotes menu closed'")
+      vim.notify("FKNotes menu closed", vim.log.levels.INFO)
     end,
     on_submit = function(item)
       local label = item.text
@@ -61,6 +65,7 @@ function M.open_main_menu()
 
   menu:mount()
 
+  -- Close menu when user switches buffers
   menu:on(event.BufLeave, function()
     menu:unmount()
   end)
