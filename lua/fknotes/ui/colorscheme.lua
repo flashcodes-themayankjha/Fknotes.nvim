@@ -1,7 +1,14 @@
 
 local M = {}
 
-function M.setup()
+function M.setup(opts)
+  opts = opts or {}
+  local colorscheme_name = opts.colorscheme
+
+  if colorscheme_name then
+    vim.cmd("colorscheme " .. colorscheme_name)
+  end
+
   local function get_fg(group, fallback)
     local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
     if ok and hl and hl.fg then
