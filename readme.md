@@ -11,25 +11,59 @@
 
 ## Installation
 
-> Note: for now This plugin is under development, So nvim package manager wont be able to recognise this , so manually install it for 
-beta test and Star this repo for Stable versions 
+Fknotes.nvim can be installed using your favorite Neovim package manager.
 
-```shell
-git clone https://github.com/flashcodes-themayankjha/Fknotes.nvim.git ~/.config/nvim/lua/fknotes
-
-```
+### Lazy.nvim
 
 ```lua
-    {
-  dir = vim.fn.stdpath("config") .. "/lua/fknotes",
-  -- full path to your plugin repo
-  name = "fknotes",                   
+{
+  'flashcodes-mayankjha/Fknotes.nvim',
   config = function()
-    require("fknotes").setup()
-  end,
-  lazy = false,  -- load on startup (or use event = "VeryLazy" if you prefer)
-},
+    require('fknotes').setup({
+      -- Your custom configuration options here
+      -- For example:
+      -- default_note_dir = vim.fn.expand('~/my_custom_notes'),
+    })
+  end
+}
+```
 
+### Packer.nvim
+
+```lua
+use {
+  'flashcodes-mayankjha/Fknotes.nvim',
+  config = function()
+    require('fknotes').setup({
+      -- Your custom configuration options here
+    })
+  end
+}
+```
+
+### Vim-Plug
+
+```vim
+Plug 'flashcodes-mayankjha/Fknotes.nvim'
+
+" In your init.vim or after Plug 'flashcodes-mayankjha/Fknotes.nvim'
+lua << EOF
+  require('fknotes').setup({
+    -- Your custom configuration options here
+  })
+EOF
+```
+
+## Configuration
+
+You can pass a table of options to the `setup()` function to customize Fknotes.nvim. These options will be merged with the plugin's default settings.
+
+Example:
+
+```lua
+require('fknotes').setup({
+  obsidian_path = vim.fn.expand('~/my_new_obsidian_vault'),
+})
 ```
 
 
