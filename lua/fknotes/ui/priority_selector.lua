@@ -25,7 +25,7 @@ function M.open_priority_picker(callback)
     enter = true,
     focusable = true,
     border = {
-      style = "rounded",
+      style = require("fknotes").config.ui.border_style,
       text = {
         top = Text(" Select Priority ", "FknotesTitle"),
         bottom = Text(" [↑↓] Move  [Enter] Choose  [q] Quit ", "FknotesComment"),
