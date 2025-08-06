@@ -2,11 +2,14 @@
 local M = {}
 
 local uv = vim.loop
-local json = vim.fn.json_encode
-local decode = vim.fn.json_decode
+local json_encode = vim.fn.json_encode
+local json_decode = vim.fn.json_decode
 
-local data_path = vim.fn.stdpath("data") .. "/fknotes"
-local file_path = data_path .. "/tasks.json"
+local config = require("fknotes").config.storage
+local core_config = require("fknotes").config
+
+local data_path = core_config.default_note_dir .. "/" .. config.tasks_subdir
+local file_path = data_path .. "/tasks." .. config.file_format
 
 -- Ensure directory exists
 local function ensure_dir()
@@ -24,8 +27,14 @@ function M.read_tasks()
   local content = fd:read("*a")
   fd:close()
 
-  local ok, result = pcall(decode, content)
-  return ok and result or {}
+  if config.file_format == "json" then
+    local ok, result = pcall(json_decode, content)
+    return ok and result or {}
+  else
+    -- For other formats, we'll just return an empty table for now
+    -- More sophisticated parsing would be needed here for markdown, etc.
+    return {}
+  end
 end
 
 -- Write tasks to file
@@ -36,7 +45,16 @@ function M.write_tasks(tasks)
     vim.notify("FKNotes: Failed to write task data", vim.log.levels.ERROR)
     return
   end
-  fd:write(json(tasks))
+
+  if config.file_format == "json" then
+    fd:write(json_encode(tasks))
+  else
+    -- For other formats, we'll just write a basic representation for now
+    -- More sophisticated serialization would be needed here for markdown, etc.
+    for _, task in ipairs(tasks) do
+      fd:write("- [ ] " .. task.title .. "\n")
+    end
+  end
   fd:close()
 end
 
