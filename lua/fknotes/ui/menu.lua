@@ -6,6 +6,7 @@ local task_browser = require("fknotes.ui.task_browser")
 local Text = require("nui.text")
 
 local M = {}
+local config = require("fknotes").config.ui
 
 function M.open_main_menu()
   local menu = NuiMenu({
@@ -14,11 +15,11 @@ function M.open_main_menu()
       col = "50%",
     },
     size = {
-      width = 50,
-      height = 11,
+      width = config.menu_width,
+      height = config.menu_height,
     },
     border = {
-      style = "rounded",
+      style = config.border_style,
       text = {
         top = Text(" 🗂️ FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
