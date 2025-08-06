@@ -23,7 +23,7 @@ function M.setup()
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-    require("fknotes_highlight").setup()
+    require("fknotes.ui.colorscheme").setup()
   end,
 })
 
@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end, { desc = "Create New FKNotes Task" })
 
  -- Browse All Tasks
-  vim.api.nvim_create_user_command("FkAllTasks", function()
+   vim.api.nvim_create_user_command("FkAllTasks", function()
     safe_require("fknotes.ui.task_browser", function(browser)
       browser.show_browser()
     end)
