@@ -3,6 +3,7 @@ local Popup = require("nui.popup")
 local Text = require("nui.text")
 local event = require("nui.utils.autocmd").event
 local priority_selector = require("fknotes.ui.priority_selector")
+local date_picker = require("fknotes.ui.date_picker")
 local storage = require("fknotes.core.storage")
 local exporter = require("fknotes.core.export")
 
@@ -197,6 +198,11 @@ function task_form.new_task()
     if field.key == "priority" then
       priority_selector.open_priority_picker(function(selected)
         field.value = selected.label
+        render_form()
+      end)
+    elseif field.key == "due_date" then
+      date_picker.open(function(selected_date)
+        field.value = selected_date
         render_form()
       end)
     elseif field.key == "tags" then
