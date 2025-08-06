@@ -20,6 +20,14 @@ function M.setup()
     end
   end
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    require("fknotes_highlight").setup()
+  end,
+})
+
+
   -- Main Menu
   vim.api.nvim_create_user_command("FkNotes", function()
     safe_require("fknotes.ui.menu", function(menu)
