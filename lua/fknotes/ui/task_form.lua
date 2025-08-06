@@ -151,8 +151,8 @@ function task_form.new_task()
     border = {
       style = "rounded",
       text = {
-        top = Text(" Create New Task ", "FkNotesHeader"),
-        bottom = Text("   Powered by Neovim and FKvim ", "FkNotesFooter2"),
+        top = Text("🗂️ Create New Task ", "FkNotesHeader"),
+        bottom = Text("🔋 Powered by Neovim and FKvim ", "FkNotesFooter2"),
       },
     },
     win_options = {
