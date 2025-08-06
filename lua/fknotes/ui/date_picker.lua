@@ -10,16 +10,16 @@ local current_date = os.date("*t") -- Current date table {year, month, day}
 local popup = nil
 local on_select_callback = nil
 
--- ✅ Helper to get days in a month (fixed: convert to number)
+-- Helper: Get days in a month
 local function days_in_month(year, month)
   local t = os.time({ year = year, month = month + 1, day = 0 })
-  return tonumber(os.date("%d", t)) -- convert to number to avoid comparison errors
+  return tonumber(os.date("%d", t))
 end
 
--- Helper to get the weekday of the first day of the month (0 for Sunday, 1 for Monday, etc.)
+-- Helper: Weekday of first of month (0 = Monday)
 local function first_weekday(year, month)
   local t = os.time({ year = year, month = month, day = 1 })
-  return (os.date("%w", t) + 6) % 7 -- Adjust to 0 for Monday, 6 for Sunday
+  return (os.date("%w", t) + 6) % 7
 end
 
 -- Render the calendar grid
@@ -30,23 +30,25 @@ local function render_calendar()
   local first_day_wday = first_weekday(year, month)
 
   local lines = {}
-  table.insert(lines, Text("  " .. os.date("%B %Y", os.time({ year = year, month = month, day = 1 })) .. "  ", "FkNotesHeader"))
-  table.insert(lines, "")
+
+  -- Styled header
+  local header_str = "  " .. os.date("%B %Y", os.time({ year = year, month = month, day = 1 })) .. "  "
+  table.insert(lines, header_str)
+
+  table.insert(lines, "") -- spacer
   table.insert(lines, "  Mo Tu We Th Fr Sa Su")
 
   local day_counter = 1
-  local grid_lines = {}
   local current_week_days = {}
+  local grid_lines = {}
 
-  -- Add leading spaces for the first week
-  for i = 0, first_day_wday - 1 do
+  -- Leading spaces for first week
+  for _ = 0, first_day_wday - 1 do
     table.insert(current_week_days, "  ")
   end
 
   while day_counter <= days do
-    local day_str = string.format("%2d", day_counter)
-    table.insert(current_week_days, day_str)
-
+    table.insert(current_week_days, string.format("%2d", day_counter))
     if #current_week_days == 7 then
       table.insert(grid_lines, "  " .. table.concat(current_week_days, " "))
       current_week_days = {}
@@ -54,11 +56,10 @@ local function render_calendar()
     day_counter = day_counter + 1
   end
 
-  -- Add trailing spaces for the last week
-  while #current_week_days < 7 do
-    table.insert(current_week_days, "  ")
-  end
   if #current_week_days > 0 then
+    while #current_week_days < 7 do
+      table.insert(current_week_days, "  ")
+    end
     table.insert(grid_lines, "  " .. table.concat(current_week_days, " "))
   end
 
@@ -69,13 +70,17 @@ local function render_calendar()
   table.insert(lines, "")
   table.insert(lines, "  < Prev Month   Next Month >")
 
+  -- Write to buffer
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
+
+  -- Highlight the header manually
+  vim.api.nvim_buf_add_highlight(buf, -1, "FkNotesHeader", 0, 0, -1)
 end
 
--- Navigate to previous month
+-- Go to previous month
 local function prev_month()
   current_date.month = current_date.month - 1
   if current_date.month == 0 then
@@ -85,7 +90,7 @@ local function prev_month()
   render_calendar()
 end
 
--- Navigate to next month
+-- Go to next month
 local function next_month()
   current_date.month = current_date.month + 1
   if current_date.month == 13 then
@@ -95,7 +100,7 @@ local function next_month()
   render_calendar()
 end
 
--- Handle date selection
+-- Select a date
 local function select_date(day)
   local selected_date_str = string.format("%04d-%02d-%02d", current_date.year, current_date.month, day)
   if on_select_callback then
@@ -104,10 +109,10 @@ local function select_date(day)
   popup:unmount()
 end
 
--- Main entry point to open the date picker
+-- Main entry point
 function M.open(callback)
   on_select_callback = callback
-  current_date = os.date("*t") -- Reset to current month/year on open
+  current_date = os.date("*t")
 
   popup = Popup({
     position = "50%",
@@ -132,21 +137,23 @@ function M.open(callback)
   popup:mount()
   render_calendar()
 
-  -- Keymaps for navigation and selection
+  -- Navigation keys
   popup:map("n", "h", prev_month, { noremap = true })
   popup:map("n", "l", next_month, { noremap = true })
   popup:map("n", "<left>", prev_month, { noremap = true })
   popup:map("n", "<right>", next_month, { noremap = true })
 
-  -- Day selection (simplified)
+  -- Enter to select current day
   popup:map("n", "<cr>", function()
     select_date(current_date.day)
   end, { noremap = true })
 
+  -- ESC to close
   popup:map("n", "<esc>", function()
     popup:unmount()
   end, { noremap = true })
 
+  -- Auto close on buffer leave
   popup:on(event.BufLeave, function()
     popup:unmount()
   end)
