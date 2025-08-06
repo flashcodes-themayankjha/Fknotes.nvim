@@ -28,7 +28,7 @@ FkNotes.nvim can be installed using your favorite Neovim package manager.
 
 ```lua
 {
-  'flashcodes-mayankjha/Fknotes.nvim',
+  'flashcode-themayankjha/Fknotes.nvim',
   config = function()
     require('fknotes').setup({
       -- Your custom configuration options here
@@ -43,7 +43,7 @@ FkNotes.nvim can be installed using your favorite Neovim package manager.
 
 ```lua
 use {
-  'flashcodes-mayankjha/Fknotes.nvim',
+  'flashcode-themayankjha/Fknotes.nvim',
   config = function()
     require('fknotes').setup({
       -- Your custom configuration options here
@@ -55,9 +55,9 @@ use {
 ### Vim-Plug
 
 ```vim
-Plug 'flashcodes-mayankjha/Fknotes.nvim'
+Plug 'flashcode-themayankjha/Fknotes.nvim'
 
-" In your init.vim or after Plug 'flashcodes-mayankjha/Fknotes.nvim'
+" In your init.vim or after Plug 'flashcode-themayankjha/Fknotes.nvim'
 lua << EOF
   require('fknotes').setup({
     -- Your custom configuration options here
@@ -105,35 +105,35 @@ require('fknotes').setup({
     border_style = 'rounded',
 
     -- Width of the main menu window.
-    -- Default: 80
+    -- Default: 40
     menu_width = 80,
 
     -- Height of the main menu window.
-    -- Default: 20
+    -- Default: 11
     menu_height = 20,
 
     -- Width of the task browser window.
-    -- Default: 100
+    -- Default: 80
     task_browser_width = 100,
 
     -- Height of the task browser window.
-    -- Default: 30
+    -- Default: 20
     task_browser_height = 30,
 
     -- Width of the task form window.
-    -- Default: 80
+    -- Default: 60
     task_form_width = 80,
 
     -- Height of the task form window.
-    -- Default: 25
+    -- Default: 17
     task_form_height = 25,
   },
 
   -- Storage configuration options
   storage = {
     -- File format for storing notes and tasks (e.g., 'markdown', 'json').
-    -- Default: 'markdown'
-    file_format = 'markdown',
+    -- Default: 'markdown' , remember for task file_format should be json else task browser won't work
+    file_format = 'json',
 
     -- Directory within default_note_dir to store tasks.
     -- Default: 'tasks'
