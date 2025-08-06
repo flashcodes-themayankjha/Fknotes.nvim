@@ -139,13 +139,15 @@ function M.open(callback)
   current_date = os.date("*t")
   selected_day = current_date.day
 
+  local config = require("fknotes").config.ui
+
   popup = Popup({
     position = "50%",
-    size = { width = 34, height = 15 },
+    size = { width = config.date_picker_width, height = config.date_picker_height },
     enter = true,
     focusable = true,
     border = {
-      style = "rounded",
+      style = config.border_style,
       text = {
         top = Text(" Select Due Date ", "FkNotesHeader"),
         bottom = Text("  [h/l] Month | [j/k] Day | [Enter] Select ", "FkNotesFooter2"),
