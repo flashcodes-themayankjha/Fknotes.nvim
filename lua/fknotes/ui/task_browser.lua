@@ -47,13 +47,9 @@ end
 
 -- Highlight group styles
 local function define_highlights()
-  -- Link FkNotes highlight groups to standard Neovim highlight groups or Fknotes specific ones
-  vim.api.nvim_set_hl(0, "FkNotesDone",    { link = "FknotesType" }) -- Example: Link to a success-like color
-  vim.api.nvim_set_hl(0, "FkNotesSoon",    { link = "FknotesStatement" }) -- Example: Link to a warning-like color
-  vim.api.nvim_set_hl(0, "FkNotesExpired", { link = "FknotesFunction" }) -- Example: Link to an error-like color
-  vim.api.nvim_set_hl(0, "FkNotesPending", { link = "Normal" }) -- Example: Link to normal text color
-  vim.api.nvim_set_hl(0, "FkNotesNone",    { link = "Comment" }) -- Example: Link to comment color
-  vim.api.nvim_set_hl(0, "FkNotesHeader",  { link = "FknotesTitle" })
+  -- FkNotes highlight groups are now defined in colorscheme.lua
+  -- We just need to ensure they are loaded.
+  require("fknotes.ui.colorscheme").setup()
 end
 
 -- Render tasks + menu footer (scroll support)
