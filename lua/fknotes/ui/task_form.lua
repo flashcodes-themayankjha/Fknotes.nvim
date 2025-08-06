@@ -143,13 +143,15 @@ function task_form.new_task()
   task_saved = false -- Reset save status
   define_highlights()
 
+  local config = require("fknotes").config.ui
+
   popup = Popup({
     position = "50%",
-    size = { width = 60, height = 17 },
+    size = { width = config.task_form_width, height = config.task_form_height },
     enter = true,
     focusable = true,
     border = {
-      style = "rounded",
+      style = config.border_style,
       text = {
         top = Text("🗂️ Create New Task ", "FkNotesHeader"),
         bottom = Text("🔋 Powered by Neovim and FKvim ", "FkNotesFooter2"),
