@@ -54,7 +54,7 @@ function M.open_main_menu()
       if label:find("Add New Task") then
         task_form.new_task()
       elseif label:find("Browse All Tasks") then
-        task_browser.open()
+        task_browser.show_browser()
       elseif label:find("Add New Note") then
         vim.notify("Note creation not implemented yet", vim.log.levels.INFO)
       elseif label:find("Browse All Notes") then
