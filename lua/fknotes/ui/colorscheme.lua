@@ -12,10 +12,13 @@ function M.setup()
 
   -- Catppuccin Mocha fallbacks
   local fallback_colors = {
-    green   = "#a6e3a1",
+    green   = "#a6da95",
     yellow  = "#f9e2af",
     red     = "#f38ba8",
     gray    = "#6c7086",
+    peach   = "#f5a97f",
+    title   = "#f0c6c6",
+    grey    = "#939ab7",
     subtle  = "#585b70",
     pink    = "#f5c2e7", -- for selected date
   }
@@ -42,7 +45,7 @@ function M.setup()
   vim.api.nvim_set_hl(0, "FkNotesDone",    { fg = green, bold = true })
   vim.api.nvim_set_hl(0, "FkNotesSoon",    { fg = yellow, bold = true })
   vim.api.nvim_set_hl(0, "FkNotesExpired", { fg = red, bold = true })
-  vim.api.nvim_set_hl(0, "FkNotesPending", { fg = gray })
+  vim.api.nvim_set_hl(0, "FkNotesPending", { fg = grey })
   vim.api.nvim_set_hl(0, "FkNotesNone",    { fg = subtle })
 
   -- Header/footer
