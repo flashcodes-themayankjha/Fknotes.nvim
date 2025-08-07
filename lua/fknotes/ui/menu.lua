@@ -8,8 +8,8 @@ local task_browser = require("fknotes.ui.task_browser")
 
 local config = {
   border_style = "rounded",
-  menu_width = 42,
-  menu_height = 13,
+  menu_width = 50,
+  menu_height = 15,
 }
 
 local M = {}
@@ -29,6 +29,8 @@ function M.open_main_menu()
       text = {
         top = Text(" 🗂️  FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
+        bottom = Text("🔋 Powered by Neovim ⚡ FkVim", "Comment"),
+        bottom_align = "center",
       },
     },
     win_options = {
@@ -38,16 +40,18 @@ function M.open_main_menu()
     },
   }, {
     lines = {
+      NuiMenu.item("📌  Take control of your notes. Effortlessly."),
+      NuiMenu.separator(""),
       NuiMenu.item("🎯  Add New Task"),
       NuiMenu.item("📝  Add New Note"),
       NuiMenu.item("📓  Browse All Notes"),
       NuiMenu.item("✅  Browse All Tasks"),
       NuiMenu.separator(""),
-      -- Bottom "button-like" commands
-      NuiMenu.item("⬇️  Move Down   ⬆️  Move Up", { disabled = true }),
-      NuiMenu.item("🔘  Select      ❌  Quit", { disabled = true }),
+      NuiMenu.item("⬇️ Move Down    ⬆️ Move Up    🔘 Select    ❌ Quit", { disabled = true }),
+      NuiMenu.separator(""),
+      NuiMenu.item("⚙️ Mentained by Mayank Jha from Flashcodes", { disabled = true }),
     },
-    max_width = 40,
+    max_width = config.menu_width - 2,
     separator = {
       char = "─",
       text_align = "center",
