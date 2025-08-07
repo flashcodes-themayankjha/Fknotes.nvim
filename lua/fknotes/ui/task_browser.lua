@@ -137,7 +137,7 @@ function task_browser.show_browser()
       style = config.border_style,
       text = {
         top = require("nui.text")("🗂️ FKvim Task Browser ", "FknotesTitle"),
-        bottom = require("nui.text")(" ⚡ Powered by Neovim + FKNotes ", "FknotesComment"),
+        bottom = require("nui.text")(" 🔋 Powered by Neovim + FKNotes ", "FknotesComment"),
       },
     },
     win_options = {
