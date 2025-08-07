@@ -78,7 +78,7 @@ You must ensure that `nui.nvim` is installed. Here is an example of how to insta
   </tr>
 </table>
 
-FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/your-username/fkvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
+FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/TheFlashCodes/FKvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
 
 ## Installation
 
