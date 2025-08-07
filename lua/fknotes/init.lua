@@ -26,7 +26,7 @@ function M.setup(opts)
     ui = {
       colorscheme = nil,
       border_style = 'rounded',
-      menu_width = 50,
+      menu_width = 55,
       menu_height = 11,
       task_browser_width = 80,
       task_browser_height = 20,
