@@ -33,18 +33,18 @@ function M.open_main_menu()
     },
     win_options = {
       winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
-      cursorline = false,
-      cursorcolumn = false,
+      cursorline = false,     -- disable current line highlight
+      cursorcolumn = false,   -- disable current column highlight
     },
   }, {
     lines = {
-      NuiMenu.separator("  Task Management ", "SpecialComment"),
-      NuiMenu.item("󰛢  Add New Task"),
-      NuiMenu.item("󰄬  Browse All Tasks"),
-      NuiMenu.separator(" 󰍨 Notes Management ", "SpecialComment"),
-      NuiMenu.item("󰈙  Add New Note"),
-      NuiMenu.item("󰈛  Browse All Notes"),
-      NuiMenu.separator(" 󱓻 Shortcuts ", "SpecialComment"),
+      NuiMenu.separator("   Task Management ", "SpecialComment"),
+      NuiMenu.item("🆕  Add New Task"),
+      NuiMenu.item("🗂️  Browse All Tasks"),
+      NuiMenu.separator(" 📝  Notes Management ", "SpecialComment"),
+      NuiMenu.item("🧾  Add New Note"),
+      NuiMenu.item("📚  Browse All Notes"),
+      NuiMenu.separator(" 🎛️  Controls ", "SpecialComment"),
       NuiMenu.item("⬇️  Move Down", { disabled = true }),
       NuiMenu.item("⬆️  Move Up", { disabled = true }),
       NuiMenu.item("⏎  Select", { disabled = true }),
