@@ -8,7 +8,7 @@ local task_browser = require("fknotes.ui.task_browser")
 
 local config = {
   border_style = "rounded",
-  menu_width = 50,
+  menu_width = 55,
   menu_height = 15,
 }
 
