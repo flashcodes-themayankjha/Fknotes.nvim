@@ -34,11 +34,24 @@ FkNotes is a lightweight and easy-to-use note-taking plugin for Neovim, designed
 -   **Export:** Export your tasks and notes to Markdown files.
 -   **Beautiful UI:** A clean and modern UI built with `nui.nvim`.
 
-## Screenshots
+## Dependencies
+
+`FkNotes.nvim` requires the following plugin to work:
+
+-   [nui.nvim](https://github.com/MunifTanjim/nui.nvim)
+
+You must ensure that `nui.nvim` is installed. Here is an example of how to install it with `lazy.nvim`:
+
+```lua
+{
+  'MunifTanjim/nui.nvim',
+  lazy = true,
+},
+```
+
+## Screenshots & FkVim Ecosystem
 
 *(Coming Soon)*
-
-## The FkVim Ecosystem
 
 FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/your-username/fkvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
 
