@@ -73,6 +73,11 @@ local function render_tasks()
   table.insert(lines, "")
   table.insert(lines, "   ✅ Mark Done [m]   🗑️ Delete [d] 🧭 Navigate [j/k or ↑/↓]  ❌ Quit")
 
+  -- Debug: Print lines to see what's being rendered
+  for i, line in ipairs(lines) do
+    print("Line " .. i .. ": " .. (type(line) == "table" and line.text or line))
+  end
+
   -- Set buffer content
   local buf = popup.bufnr
   vim.api.nvim_buf_set_option(buf, "modifiable", true)
