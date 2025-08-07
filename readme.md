@@ -9,13 +9,15 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Made%20with-Lua-blue.svg?style=for-the-badge&logo=lua" />
   <img src="https://img.shields.io/badge/Powered%20by-Neovim-green.svg?style=for-the-badge&logo=neovim" />
-  <img src="https://img.shields.io/github/license/flashcodes-themayankjha/Fknotes.nvim?style=for-the-badge" />
+  <a href="https://github.com/flashcodes-themayankjha/Fknotes.nvim/stargazers"><img src="https://img.shields.io/github/stars/flashcodes-themayankjha/Fknotes.nvim?style=for-the-badge" /></a>
+  <a href="https://github.com/flashcodes-themayankjha/Fknotes.nvim/blob/main/LICENSE"><img src="https://img.shields.io/github/license/flashcodes-themayankjha/Fknotes.nvim?style=for-the-badge" /></a>
 </p>
 
 <p align="center">
   <a href="#features">Features</a> •
+  <a href="#screenshots">Screenshots</a> •
   <a href="#installation">Installation</a> •
-  <a href="#setup-and-configuration">Configuration</a> •
+  <a href="#configuration">Configuration</a> •
   <a href="#usage">Usage</a> •
   <a href="#contributing">Contributing</a>
 </p>
@@ -31,6 +33,14 @@ FkNotes is a lightweight and easy-to-use note-taking plugin for Neovim, designed
 -   **Highly Configurable:** Customize the plugin to fit your workflow.
 -   **Export:** Export your tasks and notes to Markdown files.
 -   **Beautiful UI:** A clean and modern UI built with `nui.nvim`.
+
+## Screenshots
+
+*(Coming Soon)*
+
+## The FkVim Ecosystem
+
+FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/your-username/fkvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
 
 ## Installation
 
@@ -55,7 +65,7 @@ use 'flashcodes-themayankjha/Fknotes.nvim'
 }
 ```
 
-## Setup and Configuration
+## Configuration
 
 To set up and configure FkNotes, add the following to your `init.lua` or a dedicated configuration file. Here are the default settings:
 
@@ -121,7 +131,9 @@ FkNotes provides the following commands and default keybindings:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to open an issue or submit a pull request.
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request. We would love to have you as a contributor!
+
+If you like this plugin, please consider giving it a ⭐ on GitHub to show your support and to help others discover it.
 
 ## License
 
