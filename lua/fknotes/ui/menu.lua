@@ -8,8 +8,8 @@ local task_browser = require("fknotes.ui.task_browser")
 
 local config = {
   border_style = "rounded",
-  menu_width = 42,
-  menu_height = 13,
+  menu_width = 50,
+  menu_height = 15,
 }
 
 local M = {}
@@ -27,7 +27,7 @@ function M.open_main_menu()
     border = {
       style = config.border_style,
       text = {
-        top = Text(" 🗂️  FKNotes Main Menu ", "FknotesTitle"),
+        top = Text(" 󰲡  Welcome to FKNotes Dashboard ", "FknotesTitle"),
         top_align = "center",
       },
     },
@@ -38,17 +38,19 @@ function M.open_main_menu()
     },
   }, {
     lines = {
-      NuiMenu.item(" 🎯  Add New Task"),
-      NuiMenu.item(" 📝  Add New Note"),
-      NuiMenu.item(" 📓  Browse All Notes"),
-      NuiMenu.item(" ✅  Browse All Tasks"),
-      NuiMenu.separator(""),
-
-      -- Simulated "buttons" as informational disabled items
-      NuiMenu.item(" [j] Move Down     [k] Move Up ", { disabled = true }),
-      NuiMenu.item(" [Enter] Select     [q] Quit ", { disabled = true }),
+      NuiMenu.separator("  Task Management ", "SpecialComment"),
+      NuiMenu.item("󰛢  Add New Task"),
+      NuiMenu.item("󰄬  Browse All Tasks"),
+      NuiMenu.separator(" 󰍨 Notes Management ", "SpecialComment"),
+      NuiMenu.item("󰈙  Add New Note"),
+      NuiMenu.item("󰈛  Browse All Notes"),
+      NuiMenu.separator(" 󱓻 Shortcuts & Help ", "SpecialComment"),
+      NuiMenu.item(" [j] Move Down   [k] Move Up ", { disabled = true }),
+      NuiMenu.item(" [Enter] Select   [q] Quit ", { disabled = true }),
+      NuiMenu.separator("", "Comment"),
+      NuiMenu.item("  Powered by Neovim & Fk.vim", { disabled = true }),
     },
-    max_width = 40,
+    max_width = config.menu_width,
     separator = {
       char = "─",
       text_align = "center",
