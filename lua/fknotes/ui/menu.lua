@@ -1,13 +1,4 @@
 
-local NuiMenu = require("nui.menu")
-local event = require("nui.utils.autocmd").event
-local task_form = require("fknotes.ui.task_form")
-local task_browser = require("fknotes.ui.task_browser")
-local Text = require("nui.text")
-
-local M = {}
-local config = require("fknotes").config.ui
-
 function M.open_main_menu()
   local menu = NuiMenu({
     position = {
@@ -15,26 +6,31 @@ function M.open_main_menu()
       col = "50%",
     },
     size = {
-      width = config.menu_width,
-      height = config.menu_height,
+      width = config.menu_width or 42,
+      height = config.menu_height or 13, -- increased for buttons
     },
     border = {
-      style = config.border_style,
+      style = config.border_style or "rounded",
       text = {
-        top = Text(" 🗂️ FKNotes Main Menu ", "FknotesTitle"),
+        top = Text(" 🗂️  FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
-        bottom = Text("  [j/k] Move • [Enter] Select • [Esc] Close ", "FkNotesFooter2"),
       },
     },
     win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:FknotesComment,CursorLine:Visual",
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
+      cursorline = false,
+      cursorcolumn = false,
     },
   }, {
     lines = {
-      NuiMenu.item("🎯   Add New Task"),
-      NuiMenu.item("📝   Add New Note"),
-      NuiMenu.item("📝 Browse All Notes"),
-      NuiMenu.item("🔎   Browse All Tasks"),
+      NuiMenu.item(" 🎯  Add New Task"),
+      NuiMenu.item(" 📝  Add New Note"),
+      NuiMenu.item(" 📓  Browse All Notes"),
+      NuiMenu.item(" ✅  Browse All Tasks"),
+      NuiMenu.separator(""),
+      -- Simulated buttons as separate lines
+      NuiMenu.item(" [j] Move Down     [k] Move Up ", { disabled = true, ft = "FkButton" }),
+      NuiMenu.item(" [Enter] Select     [q] Quit ", { disabled = true, ft = "FkButton" }),
     },
     max_width = 40,
     separator = {
@@ -44,7 +40,7 @@ function M.open_main_menu()
     keymap = {
       focus_next = { "j", "<Down>" },
       focus_prev = { "k", "<Up>" },
-      close = { "<Esc>" },
+      close = { "<Esc>", "q" },
       submit = { "<CR>" },
     },
     on_close = function()
@@ -66,10 +62,7 @@ function M.open_main_menu()
 
   menu:mount()
 
-  -- Close menu when user switches buffers
   menu:on(event.BufLeave, function()
     menu:unmount()
   end)
 end
-
-return M
