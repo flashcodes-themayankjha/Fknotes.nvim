@@ -1,4 +1,19 @@
 
+local NuiMenu = require("nui.menu")
+local event = require("nui.utils.autocmd").event
+local Text = require("nui.text")
+
+local task_form = require("fknotes.task_form")
+local task_browser = require("fknotes.task_browser")
+
+local config = {
+  border_style = "rounded",
+  menu_width = 42,
+  menu_height = 13,
+}
+
+local M = {}
+
 function M.open_main_menu()
   local menu = NuiMenu({
     position = {
@@ -6,11 +21,11 @@ function M.open_main_menu()
       col = "50%",
     },
     size = {
-      width = config.menu_width or 42,
-      height = config.menu_height or 13, -- increased for buttons
+      width = config.menu_width,
+      height = config.menu_height,
     },
     border = {
-      style = config.border_style or "rounded",
+      style = config.border_style,
       text = {
         top = Text(" 🗂️  FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
@@ -28,9 +43,10 @@ function M.open_main_menu()
       NuiMenu.item(" 📓  Browse All Notes"),
       NuiMenu.item(" ✅  Browse All Tasks"),
       NuiMenu.separator(""),
-      -- Simulated buttons as separate lines
-      NuiMenu.item(" [j] Move Down     [k] Move Up ", { disabled = true, ft = "FkButton" }),
-      NuiMenu.item(" [Enter] Select     [q] Quit ", { disabled = true, ft = "FkButton" }),
+
+      -- Simulated "buttons" as informational disabled items
+      NuiMenu.item(" [j] Move Down     [k] Move Up ", { disabled = true }),
+      NuiMenu.item(" [Enter] Select     [q] Quit ", { disabled = true }),
     },
     max_width = 40,
     separator = {
@@ -66,3 +82,5 @@ function M.open_main_menu()
     menu:unmount()
   end)
 end
+
+return M
