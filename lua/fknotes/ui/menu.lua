@@ -8,8 +8,8 @@ local task_browser = require("fknotes.ui.task_browser")
 
 local config = {
   border_style = "rounded",
-  menu_width = 50,
-  menu_height = 16,
+  menu_width = 42,
+  menu_height = 13,
 }
 
 local M = {}
@@ -27,32 +27,27 @@ function M.open_main_menu()
     border = {
       style = config.border_style,
       text = {
-        top = Text(" 󰲡  Welcome to FKNotes Dashboard ", "FknotesTitle"),
+        top = Text(" 🗂️  FKNotes Main Menu ", "FknotesTitle"),
         top_align = "center",
       },
     },
     win_options = {
       winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
-      cursorline = false,     -- disable current line highlight
-      cursorcolumn = false,   -- disable current column highlight
+      cursorline = false,
+      cursorcolumn = false,
     },
   }, {
     lines = {
-      NuiMenu.separator(Text("   Task Management "), "SpecialComment"),
-      NuiMenu.item(Text("🆕  Add New Task")),
-      NuiMenu.item(Text("🗂️  Browse All Tasks")),
-      NuiMenu.separator(Text(" 📝  Notes Management "), "SpecialComment"),
-      NuiMenu.item(Text("🧾  Add New Note")),
-      NuiMenu.item(Text("📚  Browse All Notes")),
-      NuiMenu.separator(Text(" 🎛️  Controls "), "SpecialComment"),
-      NuiMenu.item(Text("⬇️  Move Down"), { disabled = true }),
-      NuiMenu.item(Text("⬆️  Move Up"), { disabled = true }),
-      NuiMenu.item(Text("⏎  Select"), { disabled = true }),
-      NuiMenu.item(Text("❌  Quit"), { disabled = true }),
-      NuiMenu.separator(Text(""), "Comment"),
-      NuiMenu.item(Text("⚡  Powered by Neovim & Fk.vim"), { disabled = true }),
+      NuiMenu.item("🎯  Add New Task"),
+      NuiMenu.item("📝  Add New Note"),
+      NuiMenu.item("📓  Browse All Notes"),
+      NuiMenu.item("✅  Browse All Tasks"),
+      NuiMenu.separator(""),
+      -- Bottom "button-like" commands
+      NuiMenu.item("⬇️  Move Down   ⬆️  Move Up", { disabled = true }),
+      NuiMenu.item("🔘  Select      ❌  Quit", { disabled = true }),
     },
-    max_width = config.menu_width,
+    max_width = 40,
     separator = {
       char = "─",
       text_align = "center",
