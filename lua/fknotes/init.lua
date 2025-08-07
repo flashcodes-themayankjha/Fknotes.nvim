@@ -62,7 +62,7 @@ function M.setup(opts)
     if ok then
       fn(mod)
     else
-      vim.notify("[FkNotes] Failed to load " .. module, vim.log.levels.ERROR)
+      vim.notify("[FkNotes] Failed to load " .. module .. ": " .. debug.traceback(), vim.log.levels.ERROR)
     end
   end
 
