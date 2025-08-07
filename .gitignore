@@ -1,0 +1,11 @@
+
+# General
+.DS_Store
+
+# Neovim
+*.swp
+*.swo
+
+# Lua
+luacov.stats.out
+luacov.report.out
