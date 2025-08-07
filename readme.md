@@ -51,7 +51,12 @@ You must ensure that `nui.nvim` is installed. Here is an example of how to insta
 
 ## Screenshots & FkVim Ecosystem
 
-*(Coming Soon)*
+<img width="1421" height="1083" alt="image" src="https://github.com/user-attachments/assets/b4fe551b-cfda-4b64-8067-b830114d11d1" /> FkNotes Menu
+<img width="597" height="409" alt="image" src="https://github.com/user-attachments/assets/46de455b-87b0-41f7-b495-1bbcc63cc468" /> New Task Menu
+<img width="280" height="221" alt="image" src="https://github.com/user-attachments/assets/ea202eac-6eef-4034-9f5c-61e19c5fc772" /> Custom Calendar UI
+<img width="832" height="510" alt="image" src="https://github.com/user-attachments/assets/b6310f4b-85c0-4ea8-947d-d396bc5f6a71" /> Browser tasks 
+
+
 
 FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/your-username/fkvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
 
