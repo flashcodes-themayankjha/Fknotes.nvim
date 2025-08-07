@@ -1,30 +1,68 @@
-# FkNotes - A Simple Note-Taking Plugin for Neovim
+<div align="center">
 
-FkNotes is a lightweight and easy-to-use note-taking plugin for Neovim, designed to help you manage your tasks and notes without leaving your editor.
+# FkNotes.nvim
+
+**A simple yet powerful note-taking and task management plugin for Neovim, inspired by the FkVim ecosystem.**
+
+</div>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Made%20with-Lua-blue.svg?style=for-the-badge&logo=lua" />
+  <img src="https://img.shields.io/badge/Powered%20by-Neovim-green.svg?style=for-the-badge&logo=neovim" />
+  <img src="https://img.shields.io/github/license/flashcodes-themayankjha/Fknotes.nvim?style=for-the-badge" />
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#setup-and-configuration">Configuration</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#contributing">Contributing</a>
+</p>
+
+---
+
+FkNotes is a lightweight and easy-to-use note-taking plugin for Neovim, designed to help you manage your tasks and notes without leaving your editor. It is built with performance and simplicity in mind, and is a proud member of the **FkVim** family of plugins.
 
 ## Features
 
-- **Task Management:** Create, browse, and manage tasks with priorities and due dates.
-- **Note Taking (Upcoming):** A simple yet effective way to jot down your thoughts and ideas.
-- **Configurable:** Customize the plugin to fit your workflow.
-- **Export:** Export your tasks and notes to Markdown files.
+-   **Task Management:** Create, browse, and manage tasks with priorities and due dates.
+-   **Note Taking (Upcoming):** A simple yet effective way to jot down your thoughts and ideas.
+-   **Highly Configurable:** Customize the plugin to fit your workflow.
+-   **Export:** Export your tasks and notes to Markdown files.
+-   **Beautiful UI:** A clean and modern UI built with `nui.nvim`.
 
 ## Installation
 
-Install FkNotes using your favorite plugin manager. For example, with `packer.nvim`:
+Install FkNotes using your favorite plugin manager.
+
+### with `packer.nvim`
 
 ```lua
-use 'your-username/FkNotes.nvim'
+use 'flashcodes-themayankjha/Fknotes.nvim'
+```
+
+### with `lazy.nvim`
+
+```lua
+{
+  'flashcodes-themayankjha/Fknotes.nvim',
+  config = function()
+    require('fknotes').setup({
+      -- your configuration here
+    })
+  end
+}
 ```
 
 ## Setup and Configuration
 
-To set up and configure FkNotes, add the following to your `init.lua` or a dedicated configuration file:
+To set up and configure FkNotes, add the following to your `init.lua` or a dedicated configuration file. Here are the default settings:
 
 ```lua
 require('fknotes').setup({
   -- General settings
-  default_note_dir = vim.fn.expand('~/my_notes'), -- Default directory for notes and tasks
+  default_note_dir = vim.fn.expand('~/notes'), -- Default directory for notes and tasks
   obsidian_path = nil, -- Path to your Obsidian vault, if you use it
 
   -- Task management
@@ -36,7 +74,7 @@ require('fknotes').setup({
     colorscheme = nil, -- Set to a colorscheme name to force a specific theme
     border_style = 'rounded', -- 'rounded', 'single', 'double', 'solid'
     menu_width = 55,
-    menu_height = 11,
+    menu_height = 15,
     task_browser_width = 80,
     task_browser_height = 20,
     task_form_width = 60,
@@ -67,17 +105,19 @@ require('fknotes').setup({
 })
 ```
 
-### Note
-
-The **Notes** feature is not yet implemented. It is a planned feature for a future release.
+> [!WARNING]
+> The **Notes** feature is not yet implemented. It is a planned feature for a future release.
 
 ## Usage
 
 FkNotes provides the following commands and default keybindings:
 
-- `:FkNotes` or `<leader>fn`: Open the main menu.
-- `:FkNewTask` or `<leader>nt`: Create a new task.
-- `:FkAllTasks` or `<leader>ln`: Browse all tasks.
+| Command | Default Keymap | Description |
+| :--- | :--- | :--- |
+| `:FkNotes` | `<leader>fn` | Open the main menu. |
+| `:FkNewTask` | `<leader>nt` | Create a new task. |
+| `:FkAllTasks` | `<leader>ln` | Browse all tasks. |
+
 
 ## Contributing
 
@@ -86,3 +126,8 @@ Contributions are welcome! Please feel free to open an issue or submit a pull re
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+<div align="center">
+  <br>
+  Made with ❤️ by <a href="https://github.com/flashcodes-themayankjha">Mayank Jha</a>
+</div>
