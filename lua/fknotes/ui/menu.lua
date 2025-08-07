@@ -9,7 +9,7 @@ local task_browser = require("fknotes.ui.task_browser")
 local config = {
   border_style = "rounded",
   menu_width = 50,
-  menu_height = 15,
+  menu_height = 16,
 }
 
 local M = {}
@@ -44,11 +44,13 @@ function M.open_main_menu()
       NuiMenu.separator(" 󰍨 Notes Management ", "SpecialComment"),
       NuiMenu.item("󰈙  Add New Note"),
       NuiMenu.item("󰈛  Browse All Notes"),
-      NuiMenu.separator(" 󱓻 Shortcuts & Help ", "SpecialComment"),
-      NuiMenu.item(" [j] Move Down   [k] Move Up ", { disabled = true }),
-      NuiMenu.item(" [Enter] Select   [q] Quit ", { disabled = true }),
+      NuiMenu.separator(" 󱓻 Shortcuts ", "SpecialComment"),
+      NuiMenu.item("⬇️  Move Down", { disabled = true }),
+      NuiMenu.item("⬆️  Move Up", { disabled = true }),
+      NuiMenu.item("⏎  Select", { disabled = true }),
+      NuiMenu.item("❌  Quit", { disabled = true }),
       NuiMenu.separator("", "Comment"),
-      NuiMenu.item("  Powered by Neovim & Fk.vim", { disabled = true }),
+      NuiMenu.item("⚡  Powered by Neovim & Fk.vim", { disabled = true }),
     },
     max_width = config.menu_width,
     separator = {
