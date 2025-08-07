@@ -139,7 +139,7 @@ function M.open(callback)
   current_date = os.date("*t")
   selected_day = current_date.day
 
-  local config = require("fknotes").config.ui
+  local config = require("fknotes.config").get().ui
 
   popup = Popup({
     position = "50%",

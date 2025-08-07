@@ -1,15 +1,13 @@
 
 local M = {}
 
-local uv = vim.loop
 local json_encode = vim.fn.json_encode
 local json_decode = vim.fn.json_decode
 
-local config = require("fknotes").config.storage
-local core_config = require("fknotes").config
+local config = require("fknotes.config").get()
 
-local data_path = core_config.default_note_dir .. "/" .. config.tasks_subdir
-local file_path = data_path .. "/tasks." .. config.file_format
+local data_path = config.default_note_dir .. "/" .. config.storage.tasks_subdir
+local file_path = data_path .. "/tasks." .. config.storage.file_format
 
 -- Ensure directory exists
 local function ensure_dir()
@@ -27,7 +25,7 @@ function M.read_tasks()
   local content = fd:read("*a")
   fd:close()
 
-  if config.file_format == "json" then
+  if config.storage.file_format == "json" then
     local ok, result = pcall(json_decode, content)
     return ok and result or {}
   else
@@ -46,7 +44,7 @@ function M.write_tasks(tasks)
     return
   end
 
-  if config.file_format == "json" then
+  if config.storage.file_format == "json" then
     fd:write(json_encode(tasks))
   else
     -- For other formats, we'll just write a basic representation for now

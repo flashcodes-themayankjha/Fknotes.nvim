@@ -1,5 +1,4 @@
-local export_config = require("fknotes").config.export
-local core_config = require("fknotes").config
+local config = require("fknotes.config").get()
 
 local M = {}
 
@@ -10,8 +9,8 @@ end
 
 -- ✍️ Save given content to a file
 local function write_to_file(subdir, title, content)
-  local base_dir = export_config.export_dir
-  local filename = sanitize_filename(title) .. "." .. export_config.default_format
+  local base_dir = config.export.export_dir
+  local filename = sanitize_filename(title) .. "." .. config.export.default_format
   local full_path = base_dir .. "/" .. subdir .. "/" .. filename
 
   vim.fn.mkdir(base_dir .. "/" .. subdir, "p") -- ensure dir exists
@@ -43,7 +42,7 @@ M.export_task = function(task)
     table.insert(lines, "**Tags:** " .. table.concat(task.tags, ", "))
   end
 
-  write_to_file(core_config.storage.tasks_subdir, task.title, table.concat(lines, "\n"))
+  write_to_file(config.storage.tasks_subdir, task.title, table.concat(lines, "\n"))
 end
 
 -- 📤 Export a note (once note_form is added)
@@ -61,8 +60,9 @@ M.export_note = function(note)
     table.insert(lines, "**Tags:** " .. table.concat(note.tags, ", "))
   end
 
-  write_to_file(core_config.storage.notes_subdir, note.title, table.concat(lines, "\n"))
+  write_to_file(config.storage.notes_subdir, note.title, table.concat(lines, "\n"))
 end
 
 return M
+
 

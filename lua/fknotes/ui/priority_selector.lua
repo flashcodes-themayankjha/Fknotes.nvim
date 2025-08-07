@@ -15,6 +15,7 @@ local priorities = {
 
 function M.open_priority_picker(callback)
   local selected = 1
+  local config = require("fknotes.config").get().ui
 
   local popup = Popup({
     position = "50%",
@@ -25,7 +26,7 @@ function M.open_priority_picker(callback)
     enter = true,
     focusable = true,
     border = {
-      style = require("fknotes").config.ui.border_style,
+      style = config.border_style,
       text = {
         top = Text(" Select Priority ", "FknotesTitle"),
         bottom = Text(" [↑↓] Move  [Enter] Choose  [q] Quit ", "FknotesComment"),

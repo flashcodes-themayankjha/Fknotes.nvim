@@ -143,7 +143,7 @@ function task_form.new_task()
   task_saved = false -- Reset save status
   define_highlights()
 
-  local config = require("fknotes").config.ui
+  local config = require("fknotes.config").get().ui
 
   popup = Popup({
     position = "50%",

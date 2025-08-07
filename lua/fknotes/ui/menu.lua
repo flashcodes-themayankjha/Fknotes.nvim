@@ -6,15 +6,11 @@ local Text = require("nui.text")
 local task_form = require("fknotes.ui.task_form")
 local task_browser = require("fknotes.ui.task_browser")
 
-local config = {
-  border_style = "rounded",
-  menu_width = 55,
-  menu_height = 15,
-}
-
 local M = {}
 
 function M.open_main_menu()
+  local config = require("fknotes.config").get().ui
+
   local menu = NuiMenu({
     position = {
       row = "50%",

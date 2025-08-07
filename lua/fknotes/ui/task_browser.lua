@@ -123,7 +123,7 @@ function task_browser.show_browser()
   current_index = 1
   define_highlights()
 
-  local config = require("fknotes").config.ui
+  local config = require("fknotes.config").get().ui
 
   popup = Popup({
     position = "50%",

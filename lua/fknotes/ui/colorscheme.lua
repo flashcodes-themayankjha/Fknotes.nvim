@@ -1,9 +1,9 @@
 
 local M = {}
 
-function M.setup(opts)
-  opts = opts or {}
-  local colorscheme_name = opts.colorscheme
+function M.setup()
+  local config = require("fknotes.config").get()
+  local colorscheme_name = config.ui.colorscheme
 
   if colorscheme_name then
     vim.cmd("colorscheme " .. colorscheme_name)
