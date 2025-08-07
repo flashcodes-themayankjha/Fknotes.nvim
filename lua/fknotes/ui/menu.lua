@@ -3,8 +3,8 @@ local NuiMenu = require("nui.menu")
 local event = require("nui.utils.autocmd").event
 local Text = require("nui.text")
 
-local task_form = require("fknotes.task_form")
-local task_browser = require("fknotes.task_browser")
+local task_form = require("fknotes.ui.task_form")
+local task_browser = require("fknotes.ui.task_browser")
 
 local config = {
   border_style = "rounded",
