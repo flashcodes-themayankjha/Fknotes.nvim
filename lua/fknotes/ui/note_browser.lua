@@ -6,13 +6,13 @@ local M = {}
 function M.show_browser()
   local tree = NuiTree({
     nodes = {
-      NuiTree.node("High Priority", {
+      NuiTree.node("My Notebook", {
         nodes = {
-          NuiTree.node("Task 1"),
-          NuiTree.node("Task 2"),
+          NuiTree.node("Chapter 1"),
+          NuiTree.node("Chapter 2"),
         }
       }),
-      NuiTree.node("Low Priority"),
+      NuiTree.node("Another Notebook"),
     },
     win_options = {
       winhighlight = "Normal:Normal,FloatBorder:FknotesComment",

@@ -3,7 +3,7 @@ local event = require("nui.utils.autocmd").event
 
 local M = {}
 
-function M.new_task()
+function M.new()
   local input = NuiInput({
     position = "50%",
     size = {
@@ -12,7 +12,7 @@ function M.new_task()
     border = {
       style = "single",
       text = {
-        top = "Enter Task Title",
+        top = "Enter Notebook Title",
         top_align = "center",
       },
     },
@@ -22,7 +22,7 @@ function M.new_task()
   }, {
     prompt = "> ",
     on_submit = function(value)
-      vim.notify("Task created: " .. value)
+      vim.notify("Notebook created: " .. value)
     end,
   })
 

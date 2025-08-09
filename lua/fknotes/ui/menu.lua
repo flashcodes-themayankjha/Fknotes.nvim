@@ -5,6 +5,9 @@ local Text = require("nui.text")
 
 local task_form = require("fknotes.ui.task_form")
 local task_browser = require("fknotes.ui.task_browser")
+local quick_notes_form = require("fknotes.ui.quick_notes_form")
+local notebook_form = require("fknotes.ui.notebook_form")
+local note_browser = require("fknotes.ui.note_browser")
 
 local M = {}
 
@@ -69,11 +72,11 @@ function M.open_main_menu()
       elseif label:find("Browse All Tasks") then
         task_browser.show_browser()
       elseif label:find("Create Quick Notes") then
-        vim.notify("Quick Notes creation not implemented yet", vim.log.levels.INFO)
+        quick_notes_form.new()
       elseif label:find("Create a Notebook") then
-        vim.notify("Notebook creation not implemented yet", vim.log.levels.INFO)
+        notebook_form.new()
       elseif label:find("Browse All Notes") then
-        vim.notify("Note browser not implemented yet", vim.log.levels.INFO)
+        note_browser.show_browser()
       end
     end,
   })
