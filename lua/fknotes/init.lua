@@ -32,47 +32,42 @@ function M.setup(opts)
     end,
   })
 
-  -- Main Menu Command
-  vim.api.nvim_create_user_command("FkNotes", function()
-    safe_require("fknotes.ui.menu", function(menu)
-      menu.open_main_menu()
-    end)
-  end, {})
+  -- Create user commands
+  local commands = {
+    FkNotes = { module = "fknotes.ui.menu", func = "open_main_menu" },
+    FkNewTask = { module = "fknotes.ui.task_form", func = "new_task" },
+    FkAllTasks = { module = "fknotes.ui.task_browser", func = "show_browser" },
+    FkQuickNotes = { module = "fknotes.ui.quick_notes_form", func = "new" },
+  }
 
-  -- New Task Command
-  vim.api.nvim_create_user_command("FkNewTask", function()
-    safe_require("fknotes.ui.task_form", function(form)
-      form.new_task()
-    end)
-  end, {})
-
-  -- Browse All Tasks Command
-  vim.api.nvim_create_user_command("FkAllTasks", function()
-    safe_require("fknotes.ui.task_browser", function(browser)
-      browser.show_browser()
-    end)
-  end, {})
+  for cmd, action in pairs(commands) do
+    vim.api.nvim_create_user_command(cmd, function()
+      safe_require(action.module, function(mod)
+        mod[action.func]()
+      end)
+    end, {})
+  end
 
   -- Set keymaps from config
   local keymaps = M.config.keymaps
   if keymaps then
-    vim.keymap.set("n", keymaps.open_menu, function()
-      safe_require("fknotes.ui.menu", function(menu)
-        menu.open_main_menu()
-      end)
-    end, { desc = "Open FKNotes Menu" })
+    local keymap_actions = {
+      open_menu = { module = "fknotes.ui.menu", func = "open_main_menu" },
+      new_task = { module = "fknotes.ui.task_form", func = "new_task" },
+      browse_tasks = { module = "fknotes.ui.task_browser", func = "show_browser" },
+      quick_notes = { module = "fknotes.ui.quick_notes_form", func = "new" },
+    }
 
-    vim.keymap.set("n", keymaps.new_task, function()
-      safe_require("fknotes.ui.task_form", function(form)
-        form.new_task()
-      end)
-    end, { desc = "Create New FKNotes Task" })
-
-    vim.keymap.set("n", keymaps.browse_tasks, function()
-      safe_require("fknotes.ui.task_browser", function(browser)
-        browser.show_browser()
-      end)
-    end, { desc = "Browse All FKNotes Tasks" })
+    for action, key in pairs(keymaps) do
+      local keymap_action = keymap_actions[action]
+      if keymap_action then
+        vim.keymap.set("n", key, function()
+          safe_require(keymap_action.module, function(mod)
+            mod[keymap_action.func]()
+          end)
+        end, { desc = "FkNotes: " .. action })
+      end
+    end
   end
 end
 

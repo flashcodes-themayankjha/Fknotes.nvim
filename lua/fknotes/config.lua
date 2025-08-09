@@ -44,6 +44,7 @@ M.config = {
     open_menu = "<leader>fn",
     new_task = "<leader>nt",
     browse_tasks = "<leader>ln",
+    quick_notes = "<leader>fq",
   }
 }
 
