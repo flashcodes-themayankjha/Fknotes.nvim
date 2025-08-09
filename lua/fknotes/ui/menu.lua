@@ -39,8 +39,9 @@ function M.open_main_menu()
       NuiMenu.item("📌  Take control of your notes. Effortlessly."),
       NuiMenu.separator(""),
       NuiMenu.item("🎯  Add New Task"),
-      NuiMenu.item("📝  Add New Note"),
-      NuiMenu.item("📓  Browse All Notes"),
+      NuiMenu.item("📝  Create Quick Notes"),
+      NuiMenu.item("📓  Create a Notebook"),
+      NuiMenu.item("📚  Browse All Notes"),
       NuiMenu.item("✅  Browse All Tasks"),
       NuiMenu.separator(""),
       NuiMenu.item("⬇️ Move Down    ⬆️ Move Up    🔘 Select    ❌ Quit", { disabled = true }),
@@ -67,8 +68,10 @@ function M.open_main_menu()
         task_form.new_task()
       elseif label:find("Browse All Tasks") then
         task_browser.show_browser()
-      elseif label:find("Add New Note") then
-        vim.notify("Note creation not implemented yet", vim.log.levels.INFO)
+      elseif label:find("Create Quick Notes") then
+        vim.notify("Quick Notes creation not implemented yet", vim.log.levels.INFO)
+      elseif label:find("Create a Notebook") then
+        vim.notify("Notebook creation not implemented yet", vim.log.levels.INFO)
       elseif label:find("Browse All Notes") then
         vim.notify("Note browser not implemented yet", vim.log.levels.INFO)
       end
