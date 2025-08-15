@@ -32,6 +32,12 @@ git clone https://github.com/flashcodes-themayankjha/Fknotes.nvim.git ~/.config/
 
 ```
 
+1 {
+   2   "fknotes",
+   3   dir = "/Users/mayankjha/.config/nvim/lua/fknotes",
+   4   cmd = "Fknotes",
+   5 }
+
 
 
 - **Open Main Menu:**
