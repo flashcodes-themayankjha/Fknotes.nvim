@@ -42,6 +42,8 @@ function M.open_main_menu()
       NuiMenu.item("📝  Add New Note"),
       NuiMenu.item("📓  Browse All Notes"),
       NuiMenu.item("✅  Browse All Tasks"),
+      NuiMenu.item("⚡  Quick Note"),
+      NuiMenu.item("📚  New Notebook"),
       NuiMenu.separator(""),
       NuiMenu.item("⬇️ Move Down    ⬆️ Move Up    🔘 Select    ❌ Quit", { disabled = true }),
       NuiMenu.separator(""),
@@ -71,6 +73,10 @@ function M.open_main_menu()
         vim.notify("Note creation not implemented yet", vim.log.levels.INFO)
       elseif label:find("Browse All Notes") then
         vim.notify("Note browser not implemented yet", vim.log.levels.INFO)
+      elseif label:find("Quick Note") then
+        vim.notify("Quick Note not implemented yet", vim.log.levels.INFO)
+      elseif label:find("New Notebook") then
+        vim.notify("New Notebook not implemented yet", vim.log.levels.INFO)
       end
     end,
   })
