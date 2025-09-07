@@ -53,6 +53,19 @@ function M.setup(opts)
     end)
   end, {})
 
+  -- New Notebook Command
+  vim.api.nvim_create_user_command("FkNewNotebook", function()
+    safe_require("fknotes.ui.new_notebook_form", function(form)
+      form.open(function(notebook_data)
+        -- TODO: Handle saving the new notebook data
+        vim.notify(
+          "New Notebook: " .. notebook_data.name .. " - " .. notebook_data.description,
+          vim.log.levels.INFO
+        )
+      end)
+    end)
+  end, {})
+
   -- Set keymaps from config
   local keymaps = M.config.keymaps
   if keymaps then
@@ -73,6 +86,18 @@ function M.setup(opts)
         browser.show_browser()
       end)
     end, { desc = "Browse All FKNotes Tasks" })
+
+    vim.keymap.set("n", keymaps.new_notebook, function()
+      safe_require("fknotes.ui.new_notebook_form", function(form)
+        form.open(function(notebook_data)
+          -- TODO: Handle saving the new notebook data
+          vim.notify(
+            "New Notebook: " .. notebook_data.name .. " - " .. notebook_data.description,
+            vim.log.levels.INFO
+          )
+        end)
+      end)
+    end, { desc = "Create New FKNotes Notebook" })
   end
 end
 
