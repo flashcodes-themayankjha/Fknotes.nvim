@@ -5,6 +5,7 @@ local Text = require("nui.text")
 
 local task_form = require("fknotes.ui.task_form")
 local task_browser = require("fknotes.ui.task_browser")
+local notebook_form = require("fknotes.ui.notebook_form")
 
 local M = {}
 
@@ -39,11 +40,10 @@ function M.open_main_menu()
       NuiMenu.item("📌  Take control of your notes. Effortlessly."),
       NuiMenu.separator(""),
       NuiMenu.item("🎯  Add New Task"),
-      NuiMenu.item("📝  Add New Note"),
+      NuiMenu.item("📓  New Notebook"),
       NuiMenu.item("📓  Browse All Notes"),
       NuiMenu.item("✅  Browse All Tasks"),
       NuiMenu.item("⚡  Quick Note"),
-      NuiMenu.item("📚  New Notebook"),
       NuiMenu.separator(""),
       NuiMenu.item("⬇️ Move Down    ⬆️ Move Up    🔘 Select    ❌ Quit", { disabled = true }),
       NuiMenu.separator(""),
@@ -69,14 +69,12 @@ function M.open_main_menu()
         task_form.new_task()
       elseif label:find("Browse All Tasks") then
         task_browser.show_browser()
-      elseif label:find("Add New Note") then
-        vim.notify("Note creation not implemented yet", vim.log.levels.INFO)
+      elseif label:find("New Notebook") then
+        notebook_form.new_notebook()
       elseif label:find("Browse All Notes") then
         vim.notify("Note browser not implemented yet", vim.log.levels.INFO)
       elseif label:find("Quick Note") then
         vim.notify("Quick Note not implemented yet", vim.log.levels.INFO)
-      elseif label:find("New Notebook") then
-        vim.notify("New Notebook not implemented yet", vim.log.levels.INFO)
       end
     end,
   })
