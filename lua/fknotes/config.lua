@@ -24,6 +24,12 @@ M.config = {
     task_form_height = 17,
     date_picker_width = 34,
     date_picker_height = 15,
+    new_notebook_form = {
+      width = 60,
+      height = 13,
+      input_width = 40,
+      border_style = 'rounded',
+    },
   },
 
   -- Storage settings
@@ -44,6 +50,7 @@ M.config = {
     open_menu = "<leader>fn",
     new_task = "<leader>nt",
     browse_tasks = "<leader>ln",
+    new_notebook = "<leader>nn",
   }
 }
 
