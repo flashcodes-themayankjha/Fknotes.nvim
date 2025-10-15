@@ -71,12 +71,7 @@ local function render_tasks()
 
   -- Padding & Footer
   table.insert(lines, "")
-  table.insert(lines, "   ✅ Mark Done [m]   🗑️ Delete [d] 🧭 Navigate [j/k or ↑/↓]  ❌ Quit")
-
-  -- Debug: Print lines to see what's being rendered
-  for i, line in ipairs(lines) do
-    print("Line " .. i .. ": " .. (type(line) == "table" and line.text or line))
-  end
+  table.insert(lines, "   📋 View [Enter]  ✅ Done [m]  🗑️ Delete [d]  🧭 Nav [j/k]  ❌ Quit [Esc]")
 
   -- Set buffer content
   local buf = popup.bufnr
@@ -115,6 +110,91 @@ local function toggle_done()
   render_tasks()
   local msg = task.done and "✅ Marked as done" or "↩️ Marked as not done"
   vim.notify(msg, vim.log.levels.INFO)
+end
+
+-- Show task details in a popup
+local function show_task_details()
+  if #tasks == 0 then return end
+  local task = tasks[current_index]
+
+  local config = require("fknotes.config").get().ui
+  local Text = require("nui.text")
+
+  local details_popup = Popup({
+    position = "50%",
+    size = {
+      width = 70,
+      height = 20,
+    },
+    enter = true,
+    focusable = true,
+    border = {
+      style = config.border_style,
+      text = {
+        top = Text("📋 Task Details ", "FknotesTitle"),
+        bottom = Text(" Press ESC to close ", "FknotesComment"),
+      },
+    },
+    win_options = {
+      winhighlight = "Normal:Normal,FloatBorder:FknotesComment",
+      wrap = true,
+      linebreak = true,
+    },
+  })
+
+  details_popup:mount()
+
+  -- Prepare task details
+  local lines = {
+    "",
+    "  📝 Title:",
+    "    " .. (task.title or "(no title)"),
+    "",
+    "  📄 Description:",
+    "    " .. (task.description or "(no description)"),
+    "",
+    "  ✨ Priority: " .. (task.priority or "-"),
+    "  📅 Due Date: " .. (task.due_date or "-"),
+    "  ✅ Status: " .. (task.done and "Done" or "Pending"),
+    "",
+  }
+
+  -- Add tags if present
+  if task.tags and type(task.tags) == "table" and #task.tags > 0 then
+    table.insert(lines, "  🏷️  Tags: " .. table.concat(task.tags, ", "))
+    table.insert(lines, "")
+  end
+
+  -- Add created date if present
+  if task.created_at then
+    table.insert(lines, "  🕐 Created: " .. task.created_at)
+    table.insert(lines, "")
+  end
+
+  -- Set buffer content
+  local buf = details_popup.bufnr
+  vim.api.nvim_buf_set_option(buf, "modifiable", true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
+  vim.api.nvim_buf_set_option(buf, "filetype", "fknotes-details")
+
+  -- Apply highlights
+  vim.api.nvim_buf_add_highlight(buf, -1, "FkNotesHeader", 2, 0, -1)
+  vim.api.nvim_buf_add_highlight(buf, -1, "FkNotesHeader", 5, 0, -1)
+
+  -- Close on ESC
+  details_popup:map("n", "<esc>", function()
+    details_popup:unmount()
+  end, { noremap = true })
+
+  details_popup:map("n", "q", function()
+    details_popup:unmount()
+  end, { noremap = true })
+
+  -- Auto-close if focus leaves
+  details_popup:on(event.BufLeave, function()
+    details_popup:unmount()
+  end)
 end
 
 -- Main entry
@@ -177,6 +257,8 @@ function task_browser.show_browser()
 
   popup:map("n", "d", delete_task, { noremap = true })
   popup:map("n", "m", toggle_done, { noremap = true })
+  popup:map("n", "<cr>", show_task_details, { noremap = true, silent = true })
+  popup:map("n", "<enter>", show_task_details, { noremap = true, silent = true })
 
   popup:map("n", "<esc>", function()
     popup:unmount()
