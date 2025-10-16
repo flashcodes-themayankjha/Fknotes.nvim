@@ -172,6 +172,9 @@ function M.setup(opts)
       fknotes_triggered[args.buf] = false
     end,
   })
+vim.api.nvim_create_user_command("FkAllTask", function()
+    require("fknotes.core.todo_list").show_all_todos()
+end, {})
 
   --------------------------------------------------------------------
   -- 🔹 Status Message
