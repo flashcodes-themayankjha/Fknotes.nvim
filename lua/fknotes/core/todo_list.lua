@@ -137,6 +137,7 @@ function M.show_all_todos()
     local orig_win = vim.api.nvim_get_current_win()
     
     if not M.todo_split_buf or not vim.api.nvim_buf_is_valid(M.todo_split_buf) then
+        M.orig_win = orig_win
         local buf = vim.api.nvim_create_buf(false, true)
         vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
         vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
@@ -180,7 +181,7 @@ function M.show_all_todos()
     update_split_for_project()
 end
 
--- Jump function (retained)
+-- Jump function
 function M.jump_to_project_todo()
     if not M.todo_split_buf or not vim.api.nvim_buf_is_valid(M.todo_split_buf) then return end
     
@@ -191,19 +192,17 @@ function M.jump_to_project_todo()
     local target_todo = todo_map[line_nr]
 
     if target_todo then
-        -- Open the file and jump to the line
-        vim.cmd("edit " .. target_todo.file)
-        vim.api.nvim_win_set_cursor(0, { target_todo.line, 0 })
-        
-        -- Close the split after jumping
-        local wins = vim.api.nvim_tabpage_list_wins(0)
-        for _, win in ipairs(wins) do
-            if vim.api.nvim_win_get_buf(win) == M.todo_split_buf then
-                vim.api.nvim_win_close(win, true)
-                M.todo_split_buf = nil
-                break
-            end
+        if M.orig_win and vim.api.nvim_win_is_valid(M.orig_win) then
+            vim.api.nvim_set_current_win(M.orig_win)
         end
+
+        local bufnr = vim.fn.bufnr(target_todo.file)
+        if bufnr ~= -1 then
+            vim.api.nvim_set_current_buf(bufnr)
+        else
+            vim.cmd("edit " .. target_todo.file)
+        end
+        vim.api.nvim_win_set_cursor(0, { target_todo.line, 0 })
     end
 end
 
