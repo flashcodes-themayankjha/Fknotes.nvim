@@ -17,9 +17,7 @@ local keyword_sign_map = {
 M.todo_split_buf = nil
 
 -- Define the header highlight group if it doesn't exist
-if vim.fn.hlID("FkNotesHeader") == 0 then
-    vim.cmd("highlight FkNotesHeader guifg=#FFD700 gui=bold")
-end
+
 
 -- Function to safely get the file icon (using nvim-web-devicons)
 local function get_file_icon(filename)
@@ -83,8 +81,8 @@ local function update_split_for_project()
     local todo_map = {} -- To map display line number back to the original todo item
     local current_line = 0
 
-    table.insert(lines, "Project Todos (ripgrep)")
-    table.insert(highlights, { line = 0, hl_group = "FkNotesHeader" })
+    table.insert(lines, "FkNotes: All Current Project Tasks")
+    table.insert(highlights, { line = 0, hl_group = "FkNotesHeader", col_start = 0, col_end = 8 })
     current_line = current_line + 1
 
     for file, todos in pairs(todos_by_file) do
