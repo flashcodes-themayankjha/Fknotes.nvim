@@ -1,8 +1,8 @@
 <div align="center">
 
-# FkNotes.nvim
+# 🗒️ FKNotes.nvim
 
-**A simple yet powerful note-taking and task management plugin for Neovim, inspired by the FkVim ecosystem.**
+**Inline notes, tasks, and TODOs for Neovim, inspired by the FkVim ecosystem.**
 
 <a href="https://github.com/TheFlashCodes/FKvim">
   <img src="https://img.shields.io/badge/FkVim-Ecosystem-blueviolet.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTkuODYgMy41bDIuNjcgMy43NEwxNC40OCAzLjVoMy41MkwxMiAxMy4yOCAzLjk4IDMuNWg5Ljg4ek0xMiAxNS4wNGwtMy44NyA1LjQ2aDcuNzVsLTMuODgtNS40NnoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt="FkVim Ecosystem"/>
@@ -18,87 +18,45 @@
 </p>
 
 <p align="center">
-  <a href="#features">Features</a> •
-  <a href="#screenshots">Screenshots</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#configuration">Configuration</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#contributing">Contributing</a>
+  <a href="#-features">Features</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-usage--syntax">Usage & Syntax</a> •
+  <a href="#-customization">Customization</a> •
+  <a href="#-contributing">Contributing</a>
 </p>
 
 ---
 
-FkNotes is a lightweight and easy-to-use note-taking plugin for Neovim, designed to help you manage your tasks and notes without leaving your editor. It is built with performance and simplicity in mind, and is a proud member of the **FkVim** family of plugins.
+**FKNotes.nvim** brings powerful, inline note-taking and task management directly into your Neovim workflow. It combines the convenience of `todo-comments.nvim` with a persistent task database and a modern UI, all tightly integrated with the FKvim ecosystem.
 
-## Features
+## ✨ Features
 
--   **Task Management:** Create, browse, and manage tasks with priorities and due dates.
--   **Note Taking (Upcoming):** A simple yet effective way to jot down your thoughts and ideas.
--   **Highly Configurable:** Customize the plugin to fit your workflow.
--   **Export:** Export your tasks and notes to Markdown files.
--   **Beautiful UI:** A clean and modern UI built with `nui.nvim`.
+-   **Flexible Inline Syntax**: Capture tasks and notes naturally with `@fknotes`.
+-   **Smart Parsing**: Recognizes priorities, due dates, and tags in any order.
+-   **Relative Due Dates**: Set deadlines with intuitive formats like `-2d` (2 days from now), `-3w` (3 weeks), or `-1m` (1 month).
+-   **Flexible Priorities**: Specify priority with `@high` or as a tag like `#medium`.
+-   **Granular Highlighting**: `todo-comments.nvim`-style highlighting for each part of your note.
+-   **Persistent Storage**: Inline tasks are saved to a JSON file and won't be lost when you close the buffer.
+-   **UI for Management**: A clean and modern UI to browse, create, and manage tasks and notebooks.
+-   **Gutter Signs & Diagnostics**: Get instant visual feedback for your notes in the sign column and diagnostics panel.
+-   **Theme Aware**: Dynamically adapts to your colorscheme for a native look and feel.
 
-## Dependencies
+## 🧩 Dependencies
 
 `FkNotes.nvim` requires the following plugin to work:
 
--   [nui.nvim](https://github.com/MunifTanjim/nui.nvim)
+-   [**MunifTanjim/nui.nvim**](https://github.com/MunifTanjim/nui.nvim)
 
-You must ensure that `nui.nvim` is installed. Here is an example of how to install it with `lazy.nvim`:
+## 🚀 Installation
 
-```lua
-{
-  'MunifTanjim/nui.nvim',
-  lazy = true,
-},
-```
-
-## Screenshots & FkVim Ecosystem
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <img width="400" alt="FkNotes Menu" src="https://github.com/user-attachments/assets/b4fe551b-cfda-4b64-8067-b830114d11d1" />
-      <br>
-      FkNotes Menu
-    </td>
-    <td align="center">
-      <img width="400" alt="New Task Menu" src="https://github.com/user-attachments/assets/46de455b-87b0-41f7-b495-1bbcc63cc468" />
-      <br>
-      New Task Menu
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img width="400" alt="Custom Calendar UI" src="https://github.com/user-attachments/assets/ea202eac-6eef-4034-9f5c-61e19c5fc772" />
-      <br>
-      Custom Calendar UI
-    </td>
-    <td align="center">
-      <img width="400" alt="Browser tasks" src="https://github.com/user-attachments/assets/b6310f4b-85c0-4ea8-947d-d396bc5f6a71" />
-      <br>
-      Browser tasks
-    </td>
-  </tr>
-</table>
-
-FkNotes is designed to work seamlessly with other plugins in the FkVim ecosystem. For the best experience, it is recommended to use FkNotes with [FkVim](https://github.com/TheFlashCodes/FKvim), a full-featured Neovim configuration with a focus on performance and aesthetics.
-
-## Installation
-
-Install FkNotes using your favorite plugin manager.
-
-### with `packer.nvim`
-
-```lua
-use 'flashcodes-themayankjha/Fknotes.nvim'
-```
+Install with your favorite plugin manager.
 
 ### with `lazy.nvim`
 
 ```lua
 {
   'flashcodes-themayankjha/Fknotes.nvim',
+  dependencies = { "MunifTanjim/nui.nvim" },
   config = function()
     require('fknotes').setup({
       -- your configuration here
@@ -107,45 +65,23 @@ use 'flashcodes-themayankjha/Fknotes.nvim'
 }
 ```
 
-## Configuration
+## ⚙️ Configuration
 
-To set up and configure FkNotes, add the following to your `init.lua` or a dedicated configuration file. Here are the default settings:
+Here are the default settings. You only need to include the keys you wish to override in your `setup()` call.
 
 ```lua
 require('fknotes').setup({
   -- General settings
   default_note_dir = vim.fn.expand('~/notes'), -- Default directory for notes and tasks
-  obsidian_path = nil, -- Path to your Obsidian vault, if you use it
-
-  -- Task management
-  default_task_priority = 'medium', -- 'high', 'medium', 'low', or 'none'
-  default_task_due_date = 'today', -- Default due date for new tasks
 
   -- UI settings
   ui = {
-    colorscheme = nil, -- Set to a colorscheme name to force a specific theme
     border_style = 'rounded', -- 'rounded', 'single', 'double', 'solid'
+    -- Window dimensions
     menu_width = 55,
     menu_height = 15,
     task_browser_width = 80,
     task_browser_height = 20,
-    task_form_width = 60,
-    task_form_height = 17,
-    date_picker_width = 34,
-    date_picker_height = 15,
-  },
-
-  -- Storage settings
-  storage = {
-    file_format = 'json', -- 'json' or 'markdown'
-    tasks_subdir = 'tasks',
-    notes_subdir = 'notes',
-  },
-
-  -- Export settings
-  export = {
-    default_format = 'markdown',
-    export_dir = vim.fn.expand('~/exported_notes'),
   },
 
   -- Keybindings
@@ -153,35 +89,90 @@ require('fknotes').setup({
     open_menu = "<leader>fn",
     new_task = "<leader>nt",
     browse_tasks = "<leader>ln",
+    new_notebook = "<leader>nn",
   }
 })
 ```
 
-> [!WARNING]
-> The **Notes** feature is not yet implemented. It is a planned feature for a future release.
+## 📝 Usage & Syntax
 
-## Usage
+### Inline Task Syntax
 
-FkNotes provides the following commands and default keybindings:
+The power of FKNotes lies in its flexible inline syntax. Start a line with `@fknotes` followed by a `TAG` and a colon.
 
-| Command | Default Keymap | Description |
-| :--- | :--- | :--- |
-| `:FkNotes` | `<leader>fn` | Open the main menu. |
-| `:FkNewTask` | `<leader>nt` | Create a new task. |
-| `:FkAllTasks` | `<leader>ln` | Browse all tasks. |
+`@fknotes <TAG>: <Your Title> [@priority | #priority] [-<date>] [#tags...]`
 
+-   **TAG**: `TODO`, `FIX`, `NOTE`, `PERF`, `WARN`, `HACK`, `TASK`. This is required.
+-   **Title**: The description of your task.
+-   **Priority**: Optional. Use either `@<level>` or `#<level>` (e.g., `@high`, `#medium`).
+-   **Due Date**: Optional. Use an absolute date (`-YYYY-MM-DD`) or a relative one (`-2d`, `-3w`, `-1m`, `-1y`).
+-   **Tags**: Optional. Add as many `#tags` as you like.
 
-## Contributing
+**The metadata (priority, date, tags) can be in any order after the title.**
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request. We would love to have you as a contributor!
+#### Examples
 
-If you like this plugin, please consider giving it a ⭐ on GitHub to show your support and to help others discover it.
+```lua
+-- A simple TODO
+-- @fknotes TODO: Implement the new feature
 
-## License
+-- A complex task with metadata in a different order
+-- @fknotes FIX: Bug in the API response -2d #fkvim @high
+
+-- A note with a relative date and a tag
+-- @fknotes NOTE: Review the documentation -1w #docs
+
+-- A performance task with a priority tag
+-- @fknotes PERF: Optimise database queries #high #db
+```
+
+### Commands
+
+| Command          | Description                   |
+| ---------------- | ----------------------------- |
+| `:FkNotes`       | Open the main FKNotes menu.   |
+| `:FkNewTask`     | Open the form to create a new task. |
+| `:FkAllTasks`    | Open the task browser to view all tasks. |
+| `:FkNewNotebook` | Open the form to create a new notebook. |
+
+## 🎨 Customization
+
+FKNotes provides granular highlight groups so you can customize the look and feel to match your theme perfectly.
+
+### Highlighting Example
+
+For a note like `@fknotes FIX: Critical bug @high -2d #auth`:
+
+-   `@fknotes` is highlighted with `FkNotesKeyword` (Yellow)
+-   `FIX:` is highlighted with `FkNotesTagFIX` (Red Background, White Text)
+-   `Critical bug` is highlighted with `FkNotesTitleFIX` (Red Text)
+-   `@high` is highlighted with `FkNotesPriorityHigh` (Red Text)
+-   `-2d` is highlighted with `FkNotesMeta` (White/Grey Text)
+-   `#auth` is highlighted with `FkNotesMeta` (White/Grey Text)
+
+### Highlight Groups
+
+You can override any of these groups using `vim.api.nvim_set_hl`.
+
+| Group                   | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `FkNotesKeyword`        | The initial `@fknotes` keyword.            |
+| `FkNotesTag<TAG>`       | The tag itself (e.g., `FkNotesTagFIX`).    |
+| `FkNotesTitle<TAG>`     | The title text (e.g., `FkNotesTitleFIX`).  |
+| `FkNotesPriorityHigh`   | High priority text (`@high` or `#high`).   |
+| `FkNotesPriorityMedium` | Medium priority text.                      |
+| `FkNotesPriorityLow`    | Low priority text.                         |
+| `FkNotesMeta`           | Due dates and `#tags`.                     |
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/flashcodes-themayankjha/Fknotes.nvim/issues).
+
+## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+---
 <div align="center">
-  <br>
   Made with ❤️ by <a href="https://github.com/flashcodes-themayankjha">Mayank Jha</a>
 </div>
