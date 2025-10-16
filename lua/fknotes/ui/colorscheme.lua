@@ -34,9 +34,8 @@ function M.setup()
   local green   = get_fg("DiffAdd",      fallback_colors.green)
   local yellow  = get_fg("WarningMsg",   fallback_colors.yellow)
   local red     = get_fg("ErrorMsg",     fallback_colors.red)
-  local gray    = get_fg("Comment",      fallback_colors.gray)
-  local subtle  = get_fg("LineNr",       fallback_colors.subtle)
-  local pink    = get_fg("String",       fallback_colors.pink)
+  local comment_color = get_fg("Comment", fallback_colors.gray)
+  local normal_fg = get_fg("Normal", "#FFFFFF")
 
   -- Link common groups
   vim.api.nvim_set_hl(0, "FkNotesBlueButton", { link = "Function" })
@@ -52,8 +51,8 @@ function M.setup()
   vim.api.nvim_set_hl(0, "FkNotesDone",    { fg = green, bold = true })
   vim.api.nvim_set_hl(0, "FkNotesSoon",    { fg = yellow, bold = true })
   vim.api.nvim_set_hl(0, "FkNotesExpired", { fg = red, bold = true })
-  vim.api.nvim_set_hl(0, "FkNotesPending", { fg = grey })
-  vim.api.nvim_set_hl(0, "FkNotesNone",    { fg = subtle })
+  vim.api.nvim_set_hl(0, "FkNotesPending", { fg = normal_fg })
+  vim.api.nvim_set_hl(0, "FkNotesNone",    { fg = comment_color })
 
   -- Header/footer
   vim.api.nvim_set_hl(0, "FkNotesHeader",  { link = "FkNotesTitle" })
