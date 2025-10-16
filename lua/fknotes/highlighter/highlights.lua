@@ -40,7 +40,7 @@ function M.setup()
   }
   for name, spec in pairs(tag_palette) do
     -- For the tag like "TODO:"
-    set_hl(0, "FkNotesTag" .. name, { fg = "#FFFFFF", bg = spec.color, bold = true })
+    set_hl(0, "FkNotesTag" .. name, { fg = "#000000", bg = spec.color, bold = true })
     -- For the title text
     set_hl(0, "FkNotesTitle" .. name, { fg = spec.color })
   end
@@ -52,6 +52,7 @@ function M.setup()
 
   -- Meta info (date, #tags)
   set_hl(0, "FkNotesMeta", { fg = "#FFFFFF", italic = true })
+  set_hl(0, "FkNotesHeader", { fg = "#000000", bg = accent.yellow or "#FFD700" })
 end
 
 return M
