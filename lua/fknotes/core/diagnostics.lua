@@ -5,10 +5,7 @@ local ns = vim.api.nvim_create_namespace("FkNotesDiagnostics")
 
 -- Default config for diagnostics display
 vim.diagnostic.config({
-  virtual_text = {
-    prefix = "󰚩 ", -- FKNotes icon
-    spacing = 2,
-  },
+  virtual_text = false,
   signs = true,
   underline = true,
   update_in_insert = false,
