@@ -115,17 +115,19 @@ function M.highlight_buffer(bufnr)
         end
       end
 
-      -- Place the sign
-      vim.fn.sign_place(0, "FkNotesSigns", "FkNotes" .. tag, bufnr, { lnum = linenr, priority = 40 })
+      if vim.bo[bufnr].filetype ~= "todo_project" then
+        -- Place the sign
+        vim.fn.sign_place(0, "FkNotesSigns", "FkNotes" .. tag, bufnr, { lnum = linenr, priority = 40 })
 
-      -- Add diagnostic entry
-      table.insert(diagnostics_data, {
-        lnum = linenr - 1,
-        col = kw_s - 1,
-        severity = vim.diagnostic.severity.INFO,
-        message = "[" .. tag .. "] " .. title_text,
-        source = "FkNotes",
-      })
+        -- Add diagnostic entry
+        table.insert(diagnostics_data, {
+          lnum = linenr - 1,
+          col = kw_s - 1,
+          severity = vim.diagnostic.severity.INFO,
+          message = "[" .. tag .. "] " .. title_text,
+          source = "FkNotes",
+        })
+      end
 
       -- Add to task storage
       storage.add_task({
